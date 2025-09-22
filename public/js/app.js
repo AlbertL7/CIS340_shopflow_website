@@ -1,7 +1,7 @@
 // Configuration - UPDATE THIS WITH YOUR NETLIFY URL
 const API_BASE_URL = window.location.hostname === 'localhost' 
     ? 'http://localhost:8888/.netlify/functions'
-    : 'https://your-site-name.netlify.app/.netlify/functions';
+    : 'https://radiant-kangaroo-4adf64.netlify.app/.netlify/functions';
 
 let allProducts = [];
 
