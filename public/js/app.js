@@ -143,14 +143,15 @@ async function getTopProducts() {
                     <tr>
                         <td>${p.product_name}</td>
                         <td>${p.category}</td>
-                        <td>${p.order_count}</td>
-                        <td>$${p.revenue}</td>
+                        <td>${p.times_ordered || 0}</td>
+                        <td>$${p.total_revenue || 0}</td>
                     </tr>
                 `).join('')}
             </table>
         `;
     } catch (error) {
         console.error('Analytics failed:', error);
+        document.getElementById('analytics-result').innerHTML = '<p class="error">Failed to load analytics</p>';
     }
 }
 
@@ -162,19 +163,20 @@ async function getCustomerSegments() {
         document.getElementById('analytics-result').innerHTML = `
             <h3>Customer Segmentation Analysis</h3>
             <table>
-                <tr><th>Segment</th><th>Customers</th><th>Avg Lifetime Value</th><th>Total Value</th></tr>
+                <tr><th>Segment</th><th>Customers</th><th>Orders</th><th>Revenue</th></tr>
                 ${data.map(s => `
                     <tr>
                         <td>${s.customer_segment}</td>
                         <td>${s.customer_count}</td>
-                        <td>$${s.avg_ltv}</td>
-                        <td>$${s.total_ltv}</td>
+                        <td>${s.total_orders || 0}</td>
+                        <td>$${s.actual_revenue || 0}</td>
                     </tr>
                 `).join('')}
             </table>
         `;
     } catch (error) {
         console.error('Analytics failed:', error);
+        document.getElementById('analytics-result').innerHTML = '<p class="error">Failed to load analytics</p>';
     }
 }
 
@@ -186,10 +188,11 @@ async function getRevenueByCategory() {
         document.getElementById('analytics-result').innerHTML = `
             <h3>Revenue by Category</h3>
             <table>
-                <tr><th>Category</th><th>Products Sold</th><th>Total Revenue</th></tr>
+                <tr><th>Category</th><th>Orders</th><th>Units Sold</th><th>Revenue</th></tr>
                 ${data.map(c => `
                     <tr>
                         <td>${c.category}</td>
+                        <td>${c.order_count}</td>
                         <td>${c.units_sold}</td>
                         <td>$${c.revenue}</td>
                     </tr>
@@ -198,6 +201,7 @@ async function getRevenueByCategory() {
         `;
     } catch (error) {
         console.error('Analytics failed:', error);
+        document.getElementById('analytics-result').innerHTML = '<p class="error">Failed to load analytics</p>';
     }
 }
 
@@ -209,11 +213,12 @@ async function getOrderStatus() {
         document.getElementById('analytics-result').innerHTML = `
             <h3>Order Status Distribution</h3>
             <table>
-                <tr><th>Status</th><th>Count</th><th>Total Value</th></tr>
+                <tr><th>Status</th><th>Count</th><th>Percentage</th><th>Total Value</th></tr>
                 ${data.map(o => `
                     <tr>
                         <td>${o.order_status}</td>
                         <td>${o.order_count}</td>
+                        <td>${o.percentage}%</td>
                         <td>$${o.total_value}</td>
                     </tr>
                 `).join('')}
@@ -221,6 +226,7 @@ async function getOrderStatus() {
         `;
     } catch (error) {
         console.error('Analytics failed:', error);
+        document.getElementById('analytics-result').innerHTML = '<p class="error">Failed to load analytics</p>';
     }
 }
 
@@ -245,6 +251,7 @@ async function getMonthlySales() {
         `;
     } catch (error) {
         console.error('Analytics failed:', error);
+        document.getElementById('analytics-result').innerHTML = '<p class="error">Failed to load analytics</p>';
     }
 }
 
@@ -261,11 +268,13 @@ async function getProductPerformance() {
                     <tr>
                         <td>${p.performance_category}</td>
                         <td>${p.product_count}</td>
-                        <td>${Math.round(p.avg_stock)}</td>
+                        <td>${Math.round(p.avg_stock || 0)}</td>
                     </tr>
                 `).join('')}
             </table>
         `;
     } catch (error) {
         console.error('Analytics failed:', error);
+        document.getElementById('analytics-result').innerHTML = '<p class="error">Failed to load analytics</p>';
     }
+}
