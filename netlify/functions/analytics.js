@@ -24,7 +24,6 @@ exports.handler = async (event, context) => {
         
         switch(queryType) {
             case 'top-products':
-                // Products that were actually sold
                 query = `
                     SELECT 
                         p.product_name,
@@ -45,7 +44,6 @@ exports.handler = async (event, context) => {
                 break;
                 
             case 'segments':
-                // Real customer purchase behavior
                 query = `
                     SELECT 
                         c.customer_segment,
@@ -62,7 +60,6 @@ exports.handler = async (event, context) => {
                 break;
                 
             case 'revenue':
-                // Actual revenue by category from completed orders
                 query = `
                     SELECT 
                         p.category,
@@ -80,7 +77,6 @@ exports.handler = async (event, context) => {
                 break;
                 
             case 'orders':
-                // Order fulfillment analysis
                 query = `
                     SELECT 
                         order_status,
@@ -95,7 +91,6 @@ exports.handler = async (event, context) => {
                 break;
                 
             case 'monthly-sales':
-                // Sales trend over time
                 query = `
                     SELECT 
                         DATE_FORMAT(order_date, '%Y-%m') as month,
@@ -111,23 +106,30 @@ exports.handler = async (event, context) => {
                 break;
                 
             case 'product-performance':
-                // Products never sold vs bestsellers
                 query = `
                     SELECT 
                         CASE 
-                            WHEN oi.order_id IS NULL THEN 'Never Sold'
-                            WHEN order_count >= 3 THEN 'Bestseller'
+                            WHEN sales.total_sold IS NULL THEN 'Never Sold'
+                            WHEN sales.total_sold >= 3 THEN 'Bestseller'
                             ELSE 'Regular'
                         END as performance_category,
                         COUNT(DISTINCT p.product_id) as product_count,
-                        AVG(p.stock_quantity) as avg_stock
+                        ROUND(AVG(p.stock_quantity), 0) as avg_stock
                     FROM products p
                     LEFT JOIN (
-                        SELECT product_id, COUNT(*) as order_count, order_id
+                        SELECT 
+                            product_id, 
+                            COUNT(*) as total_sold
                         FROM order_items
                         GROUP BY product_id
-                    ) oi ON p.product_id = oi.product_id
+                    ) sales ON p.product_id = sales.product_id
                     GROUP BY performance_category
+                    ORDER BY 
+                        CASE performance_category
+                            WHEN 'Bestseller' THEN 1
+                            WHEN 'Regular' THEN 2
+                            WHEN 'Never Sold' THEN 3
+                        END
                 `;
                 break;
                 
