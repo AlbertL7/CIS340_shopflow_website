@@ -22,18 +22,33 @@ exports.handler = async (event, context) => {
     try {
         connection = await mysql.createConnection({
             host: process.env.DB_HOST,
-            port: process.env.DB_PORT,
+            port: parseInt(process.env.DB_PORT),
             user: process.env.DB_USER,
             password: process.env.DB_PASSWORD,
             database: process.env.DB_NAME,
-            ssl: { rejectUnauthorized: true }
+            ssl: { rejectUnauthorized: false }
         });
         
+        // Search with partial matching - case insensitive
+        const searchPattern = `%${searchTerm}%`;
+        
         const [rows] = await connection.execute(
-            `SELECT product_id, product_name, category, price, stock_quantity 
-             FROM products 
-             WHERE (product_name LIKE ? OR category LIKE ?) AND status = 'Active'`,
-            [`%${searchTerm}%`, `%${searchTerm}%`]
+            `SELECT DISTINCT 
+                p.product_id, 
+                p.product_name, 
+                p.category, 
+                p.price, 
+                p.stock_quantity,
+                p.description
+             FROM products p
+             WHERE (
+                LOWER(p.product_name) LIKE LOWER(?) OR 
+                LOWER(p.category) LIKE LOWER(?) OR 
+                LOWER(p.description) LIKE LOWER(?) OR
+                LOWER(p.sku) LIKE LOWER(?)
+             ) AND p.status = 'Active'
+             ORDER BY p.product_name`,
+            [searchPattern, searchPattern, searchPattern, searchPattern]
         );
         
         return {
@@ -45,7 +60,7 @@ exports.handler = async (event, context) => {
         return {
             statusCode: 500,
             headers,
-            body: JSON.stringify({ error: 'Search failed' })
+            body: JSON.stringify({ error: 'Search failed', details: error.message })
         };
     } finally {
         if (connection) await connection.end();
