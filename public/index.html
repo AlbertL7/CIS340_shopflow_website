@@ -3,28 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShopFlow Store</title>
+    <title>ShopFlow Database Analytics</title>
     <link rel="stylesheet" href="css/style.css">
+    <!-- Add Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <h1>ShopFlow Store</h1>
-        <nav>
-            <a href="#products">Products</a>
-            <a href="#analytics">Analytics</a>
-            <a href="#customer-lookup">Customers</a>
-        </nav>
+    <!-- Hero Header with Animation -->
+    <header class="hero-header">
+        <div class="lightning-bg"></div>
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-database"></i>
+                <h1>ShopFlow Analytics</h1>
+            </div>
+            <nav>
+                <a href="#products"><i class="fas fa-shopping-cart"></i> Products</a>
+                <a href="#analytics"><i class="fas fa-chart-line"></i> Analytics</a>
+                <a href="#customer-lookup"><i class="fas fa-users"></i> Customers</a>
+            </nav>
+        </div>
+        <div class="hero-banner">
+            <h2>Real-Time Database Analytics Platform</h2>
+            <p>Connected to Aiven MySQL Cloud Database</p>
+            <div class="stats-row">
+                <div class="stat">
+                    <i class="fas fa-server"></i>
+                    <span>Live Connection</span>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-bolt"></i>
+                    <span>Lightning Fast</span>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>SSL Secured</span>
+                </div>
+            </div>
+        </div>
     </header>
 
     <main>
-        <!-- SEARCH AND FILTER SECTION -->
-        <section id="search-section">
-            <h2>Search & Filter</h2>
+        <!-- Search Section with Icons -->
+        <section id="search-section" class="glass-effect">
+            <div class="section-header">
+                <i class="fas fa-search"></i>
+                <h2>Search & Filter</h2>
+            </div>
             <div class="search-container">
-                <input type="text" id="search-input" placeholder="Search products...">
-                <button onclick="searchProducts()" class="btn">Search</button>
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="search-input" placeholder="Search products...">
+                    <button onclick="searchProducts()" class="btn btn-primary">
+                        <i class="fas fa-bolt"></i> Search
+                    </button>
+                </div>
                 
-                <select id="category-filter" onchange="filterByCategory()">
+                <select id="category-filter" onchange="filterByCategory()" class="filter-select">
                     <option value="">All Categories</option>
                     <option value="Electronics">Electronics</option>
                     <option value="Clothing">Clothing</option>
@@ -33,7 +68,7 @@
                     <option value="Books">Books</option>
                 </select>
                 
-                <select id="price-filter" onchange="filterByPrice()">
+                <select id="price-filter" onchange="filterByPrice()" class="filter-select">
                     <option value="">All Prices</option>
                     <option value="0-50">Under $50</option>
                     <option value="50-100">$50 - $100</option>
@@ -42,41 +77,81 @@
             </div>
         </section>
 
-        <!-- PRODUCTS DISPLAY -->
-        <section id="products">
-            <h2>Products Catalog</h2>
+        <!-- Products Grid -->
+        <section id="products" class="glass-effect">
+            <div class="section-header">
+                <i class="fas fa-box"></i>
+                <h2>Products Catalog</h2>
+            </div>
             <div id="product-list" class="product-grid">
-                <div class="loading">Loading products...</div>
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading products from database...</p>
+                </div>
             </div>
         </section>
 
-        <!-- ANALYTICS DASHBOARD -->
-        <section id="analytics">
-            <h2>Business Analytics</h2>
+        <!-- Analytics Dashboard -->
+        <section id="analytics" class="glass-effect">
+            <div class="section-header">
+                <i class="fas fa-analytics"></i>
+                <h2>Business Intelligence Dashboard</h2>
+            </div>
             <div class="query-buttons">
-                <button onclick="getTopProducts()" class="btn">Top Products</button>
-                <button onclick="getCustomerSegments()" class="btn">Customer Segments</button>
-                <button onclick="getRevenueByCategory()" class="btn">Revenue Analysis</button>
-                <button onclick="getOrderStatus()" class="btn">Order Status</button>
-                <button onclick="getMonthlySales()" class="btn">Monthly Trends</button>
-                <button onclick="getProductPerformance()" class="btn">Product Performance</button>
+                <button onclick="getTopProducts()" class="btn btn-gradient">
+                    <i class="fas fa-trophy"></i> Top Products
+                </button>
+                <button onclick="getCustomerSegments()" class="btn btn-gradient">
+                    <i class="fas fa-users"></i> Segments
+                </button>
+                <button onclick="getRevenueByCategory()" class="btn btn-gradient">
+                    <i class="fas fa-dollar-sign"></i> Revenue
+                </button>
+                <button onclick="getOrderStatus()" class="btn btn-gradient">
+                    <i class="fas fa-clipboard-list"></i> Orders
+                </button>
+                <button onclick="getMonthlySales()" class="btn btn-gradient">
+                    <i class="fas fa-calendar"></i> Trends
+                </button>
+                <button onclick="getProductPerformance()" class="btn btn-gradient">
+                    <i class="fas fa-chart-pie"></i> Performance
+                </button>
             </div>
-            <div id="analytics-result"></div>
+            <div id="analytics-result" class="analytics-display"></div>
         </section>
 
-        <!-- CUSTOMER LOOKUP -->
-        <section id="customer-lookup">
-            <h2>Customer Lookup</h2>
+        <!-- Customer Lookup -->
+        <section id="customer-lookup" class="glass-effect">
+            <div class="section-header">
+                <i class="fas fa-user-search"></i>
+                <h2>Customer Database Lookup</h2>
+            </div>
             <div class="form-group">
-                <input type="email" id="customer-email" placeholder="Enter customer email">
-                <button onclick="lookupCustomer()" class="btn">Find Customer</button>
+                <div class="input-with-icon">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="customer-email" placeholder="Enter customer email">
+                    <button onclick="lookupCustomer()" class="btn btn-primary">
+                        <i class="fas fa-database"></i> Query Database
+                    </button>
+                </div>
             </div>
             <div id="customer-result"></div>
         </section>
     </main>
 
-    <footer>
-        <p>&copy; 2024 ShopFlow - Database Project</p>
+    <footer class="tech-footer">
+        <div class="footer-content">
+            <div class="tech-stack">
+                <h3>Technology Stack</h3>
+                <div class="tech-icons">
+                    <span><i class="fas fa-database"></i> MySQL 8.0</span>
+                    <span><i class="fab fa-node-js"></i> Node.js</span>
+                    <span><i class="fas fa-cloud"></i> Aiven Cloud</span>
+                    <span><i class="fas fa-lock"></i> SSL/TLS</span>
+                </div>
+            </div>
+            <p>&copy; 2024 ShopFlow - Database Analytics Project</p>
+        </div>
     </footer>
 
     <script src="js/app.js"></script>
