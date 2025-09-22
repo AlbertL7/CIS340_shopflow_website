@@ -16,11 +16,13 @@ exports.handler = async (event, context) => {
     try {
         connection = await mysql.createConnection({
             host: process.env.DB_HOST,
-            port: process.env.DB_PORT,
+            port: parseInt(process.env.DB_PORT),  // Make sure it's a number
             user: process.env.DB_USER,
             password: process.env.DB_PASSWORD,
             database: process.env.DB_NAME,
-            ssl: { rejectUnauthorized: true }
+            ssl: {
+                rejectUnauthorized: false  // This allows SSL without certificate verification
+            }
         });
         
         const [rows] = await connection.execute(
@@ -38,7 +40,7 @@ exports.handler = async (event, context) => {
         return {
             statusCode: 500,
             headers,
-            body: JSON.stringify({ error: 'Database connection failed' })
+            body: JSON.stringify({ error: 'Database connection failed', details: error.message })
         };
     } finally {
         if (connection) await connection.end();
