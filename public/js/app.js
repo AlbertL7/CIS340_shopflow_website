@@ -223,3 +223,49 @@ async function getOrderStatus() {
         console.error('Analytics failed:', error);
     }
 }
+
+async function getMonthlySales() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/analytics?query=monthly-sales`);
+        const data = await response.json();
+        
+        document.getElementById('analytics-result').innerHTML = `
+            <h3>Monthly Sales Trend</h3>
+            <table>
+                <tr><th>Month</th><th>Orders</th><th>Customers</th><th>Revenue</th></tr>
+                ${data.map(m => `
+                    <tr>
+                        <td>${m.month}</td>
+                        <td>${m.orders}</td>
+                        <td>${m.unique_customers}</td>
+                        <td>$${m.revenue}</td>
+                    </tr>
+                `).join('')}
+            </table>
+        `;
+    } catch (error) {
+        console.error('Analytics failed:', error);
+    }
+}
+
+async function getProductPerformance() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/analytics?query=product-performance`);
+        const data = await response.json();
+        
+        document.getElementById('analytics-result').innerHTML = `
+            <h3>Product Performance Analysis</h3>
+            <table>
+                <tr><th>Category</th><th>Product Count</th><th>Avg Stock Level</th></tr>
+                ${data.map(p => `
+                    <tr>
+                        <td>${p.performance_category}</td>
+                        <td>${p.product_count}</td>
+                        <td>${Math.round(p.avg_stock)}</td>
+                    </tr>
+                `).join('')}
+            </table>
+        `;
+    } catch (error) {
+        console.error('Analytics failed:', error);
+    }
