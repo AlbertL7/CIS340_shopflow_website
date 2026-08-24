@@ -337,4 +337,226 @@ main {
 }
 
 .analytics-display th {
-    backgrou
+    background: rgba(0, 212, 255, 0.22);
+    color: var(--text-light);
+    text-align: left;
+    font-weight: 700;
+}
+
+.analytics-display th,
+.analytics-display td {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    vertical-align: top;
+}
+
+.analytics-display tbody tr:hover {
+    background: rgba(0, 212, 255, 0.08);
+}
+
+.table-scroll {
+    max-width: 100%;
+    overflow-x: auto;
+    border-radius: 10px;
+}
+
+.customer-info {
+    margin-top: 1.25rem;
+    padding: 1.25rem;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.customer-info h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.75rem;
+}
+
+.customer-info p + p {
+    margin-top: 0.35rem;
+}
+
+.form-group,
+.input-with-icon {
+    width: 100%;
+}
+
+.input-with-icon {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.input-with-icon input {
+    min-width: 0;
+    flex: 1;
+    padding: 0.8rem 1rem;
+    color: var(--text-light);
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 25px;
+}
+
+.error {
+    padding: 0.85rem 1rem;
+    color: #fff;
+    background: rgba(196, 45, 63, 0.45);
+    border: 1px solid #ff8a9a;
+    border-radius: 10px;
+}
+
+.status-message {
+    padding: 0.85rem 1rem;
+    color: var(--text-light);
+    background: rgba(0, 212, 255, 0.1);
+    border-radius: 10px;
+}
+
+.visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+.tech-footer {
+    margin-top: 3rem;
+    padding: 2rem 1rem;
+    color: var(--text-dark);
+    background: rgba(0, 0, 0, 0.42);
+}
+
+.footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.tech-icons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 0.75rem 0 1.25rem;
+}
+
+.tech-icons span {
+    padding: 0.45rem 0.8rem;
+    border: 1px solid rgba(0, 212, 255, 0.25);
+    border-radius: 999px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 3px solid #ffd166;
+    outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+    .header-content,
+    .stats-row,
+    .input-with-icon {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .header-content {
+        gap: 1rem;
+    }
+
+    .logo h1 {
+        font-size: 1.55rem;
+    }
+
+    nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+    }
+
+    nav a {
+        margin: 0;
+        padding: 0.55rem 0.75rem;
+    }
+
+    .hero-banner h2 {
+        font-size: 1.85rem;
+    }
+
+    .stats-row {
+        gap: 0.75rem;
+    }
+
+    .stat {
+        justify-content: center;
+        padding: 0.75rem 1rem;
+    }
+
+    .glass-effect {
+        padding: 1.25rem;
+    }
+
+    .search-box {
+        min-width: 0;
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+    }
+
+    .search-box input {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .search-box .btn,
+    .filter-select,
+    .input-with-icon .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .product-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+@media print {
+    body {
+        color: #111;
+        background: #fff;
+    }
+
+    .lightning-bg,
+    nav,
+    .btn {
+        display: none !important;
+    }
+
+    .glass-effect,
+    .product-card,
+    .customer-info {
+        color: #111;
+        background: #fff;
+        border: 1px solid #888;
+        box-shadow: none;
+    }
+}

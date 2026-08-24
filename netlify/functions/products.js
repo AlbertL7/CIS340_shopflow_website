@@ -1,47 +1,23 @@
-const mysql = require('mysql2/promise');
+const { createConnection, json, requireGet } = require('../lib/db');
 
-exports.handler = async (event, context) => {
-    const headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Content-Type': 'application/json'
-    };
-    
-    if (event.httpMethod !== 'GET') {
-        return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
-    }
+exports.handler = async (event) => {
+    const methodError = requireGet(event);
+    if (methodError) return methodError;
     
     let connection;
     
     try {
-        connection = await mysql.createConnection({
-            host: process.env.DB_HOST,
-            port: parseInt(process.env.DB_PORT),  // Make sure it's a number
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_NAME,
-            ssl: {
-                rejectUnauthorized: false  // This allows SSL without certificate verification
-            }
-        });
+        connection = await createConnection();
         
         const [rows] = await connection.execute(
             'SELECT product_id, product_name, category, price, stock_quantity FROM products WHERE status = ?',
             ['Active']
         );
         
-        return {
-            statusCode: 200,
-            headers,
-            body: JSON.stringify(rows)
-        };
+        return json(200, rows);
     } catch (error) {
         console.error('Database error:', error);
-        return {
-            statusCode: 500,
-            headers,
-            body: JSON.stringify({ error: 'Database connection failed', details: error.message })
-        };
+        return json(500, { error: 'Database request failed' });
     } finally {
         if (connection) await connection.end();
     }

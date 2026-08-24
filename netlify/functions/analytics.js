@@ -1,24 +1,14 @@
-const mysql = require('mysql2/promise');
+const { createConnection, json, requireGet } = require('../lib/db');
 
-exports.handler = async (event, context) => {
-    const headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Content-Type': 'application/json'
-    };
+exports.handler = async (event) => {
+    const methodError = requireGet(event);
+    if (methodError) return methodError;
     
     const queryType = event.queryStringParameters?.query;
     let connection;
     
     try {
-        connection = await mysql.createConnection({
-            host: process.env.DB_HOST,
-            port: parseInt(process.env.DB_PORT),
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_NAME,
-            ssl: { rejectUnauthorized: false }
-        });
+        connection = await createConnection();
         
         let query = '';
         
@@ -30,12 +20,10 @@ exports.handler = async (event, context) => {
                         p.category,
                         COUNT(DISTINCT oi.order_id) as times_ordered,
                         SUM(oi.quantity) as total_quantity_sold,
-                        ROUND(SUM(oi.line_total), 2) as total_revenue,
-                        ROUND(AVG(r.rating), 1) as avg_rating
+                        ROUND(SUM(oi.line_total), 2) as total_revenue
                     FROM products p
                     INNER JOIN order_items oi ON p.product_id = oi.product_id
                     INNER JOIN orders o ON oi.order_id = o.order_id
-                    LEFT JOIN reviews r ON p.product_id = r.product_id
                     WHERE o.order_status = 'Delivered'
                     GROUP BY p.product_id, p.product_name, p.category
                     ORDER BY total_revenue DESC
@@ -52,7 +40,9 @@ exports.handler = async (event, context) => {
                         ROUND(AVG(c.lifetime_value), 2) as avg_ltv,
                         ROUND(SUM(o.total_amount), 2) as actual_revenue
                     FROM customers c
-                    LEFT JOIN orders o ON c.customer_id = o.customer_id
+                    LEFT JOIN orders o
+                        ON c.customer_id = o.customer_id
+                       AND o.order_status = 'Delivered'
                     WHERE c.status = 'Active'
                     GROUP BY c.customer_segment
                     ORDER BY actual_revenue DESC
@@ -118,10 +108,12 @@ exports.handler = async (event, context) => {
                     FROM products p
                     LEFT JOIN (
                         SELECT 
-                            product_id, 
+                            oi.product_id,
                             COUNT(*) as total_sold
-                        FROM order_items
-                        GROUP BY product_id
+                        FROM order_items oi
+                        INNER JOIN orders o ON oi.order_id = o.order_id
+                        WHERE o.order_status = 'Delivered'
+                        GROUP BY oi.product_id
                     ) sales ON p.product_id = sales.product_id
                     GROUP BY performance_category
                     ORDER BY 
@@ -134,27 +126,15 @@ exports.handler = async (event, context) => {
                 break;
                 
             default:
-                return {
-                    statusCode: 400,
-                    headers,
-                    body: JSON.stringify({ error: 'Invalid query type' })
-                };
+                return json(400, { error: 'Invalid query type' });
         }
         
         const [rows] = await connection.execute(query);
         
-        return {
-            statusCode: 200,
-            headers,
-            body: JSON.stringify(rows)
-        };
+        return json(200, rows);
     } catch (error) {
         console.error('Analytics error:', error);
-        return {
-            statusCode: 500,
-            headers,
-            body: JSON.stringify({ error: 'Analytics query failed', details: error.message })
-        };
+        return json(500, { error: 'Analytics query failed' });
     } finally {
         if (connection) await connection.end();
     }

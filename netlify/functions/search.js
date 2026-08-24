@@ -1,36 +1,22 @@
-const mysql = require('mysql2/promise');
+const { createConnection, json, requireGet } = require('../lib/db');
 
-exports.handler = async (event, context) => {
-    const headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Content-Type': 'application/json'
-    };
+exports.handler = async (event) => {
+    const methodError = requireGet(event);
+    if (methodError) return methodError;
     
     const searchTerm = event.queryStringParameters?.q;
     
-    if (!searchTerm) {
-        return {
-            statusCode: 400,
-            headers,
-            body: JSON.stringify({ error: 'Search term required' })
-        };
+    if (!searchTerm || searchTerm.trim().length > 100) {
+        return json(400, { error: 'Enter a search term of 1 to 100 characters' });
     }
     
     let connection;
     
     try {
-        connection = await mysql.createConnection({
-            host: process.env.DB_HOST,
-            port: parseInt(process.env.DB_PORT),
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_NAME,
-            ssl: { rejectUnauthorized: false }
-        });
+        connection = await createConnection();
         
         // Search with partial matching - case insensitive
-        const searchPattern = `%${searchTerm}%`;
+        const searchPattern = `%${searchTerm.trim()}%`;
         
         const [rows] = await connection.execute(
             `SELECT DISTINCT 
@@ -51,17 +37,10 @@ exports.handler = async (event, context) => {
             [searchPattern, searchPattern, searchPattern, searchPattern]
         );
         
-        return {
-            statusCode: 200,
-            headers,
-            body: JSON.stringify(rows)
-        };
+        return json(200, rows);
     } catch (error) {
-        return {
-            statusCode: 500,
-            headers,
-            body: JSON.stringify({ error: 'Search failed', details: error.message })
-        };
+        console.error('Search error:', error);
+        return json(500, { error: 'Search failed' });
     } finally {
         if (connection) await connection.end();
     }

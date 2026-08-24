@@ -2,14 +2,19 @@
   "name": "shopflow-website",
   "version": "1.0.0",
   "description": "ShopFlow e-commerce website with database connection",
+  "engines": {
+    "node": ">=22.13"
+  },
   "dependencies": {
-    "mysql2": "^3.6.0"
+    "mysql2": "3.24.2"
   },
   "devDependencies": {
-    "netlify-cli": "^17.0.0"
+    "netlify-cli": "27.3.0"
   },
   "scripts": {
     "dev": "netlify dev",
-    "deploy": "netlify deploy --prod"
+    "deploy": "netlify deploy --prod",
+    "test": "node test/functions-smoke.js",
+    "preview:test": "node test/browser-server.js"
   }
 }
