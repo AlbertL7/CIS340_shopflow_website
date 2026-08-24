@@ -1,50 +1,32 @@
-const mysql = require('mysql2/promise');
+const { createConnection, json, requireGet } = require('../lib/db');
 
-exports.handler = async (event, context) => {
-    const headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Content-Type': 'application/json'
-    };
+exports.handler = async (event) => {
+    const methodError = requireGet(event);
+    if (methodError) return methodError;
     
     const email = event.queryStringParameters?.email;
     
-    if (!email) {
-        return {
-            statusCode: 400,
-            headers,
-            body: JSON.stringify({ error: 'Email required' })
-        };
+    if (!email || email.length > 254) {
+        return json(400, { error: 'Enter a valid fictional customer email' });
     }
     
     let connection;
     
     try {
-        connection = await mysql.createConnection({
-            host: process.env.DB_HOST,
-            port: process.env.DB_PORT,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_NAME,
-            ssl: { rejectUnauthorized: true }
-        });
+        connection = await createConnection();
         
         const [rows] = await connection.execute(
-            'SELECT * FROM customers WHERE email = ?',
-            [email.toLowerCase()]
+            `SELECT first_name, last_name, email, customer_segment,
+                    lifetime_value, status, registration_date
+             FROM customers
+             WHERE email = ?`,
+            [email.trim().toLowerCase()]
         );
         
-        return {
-            statusCode: 200,
-            headers,
-            body: JSON.stringify(rows[0] || null)
-        };
+        return json(200, rows[0] || null);
     } catch (error) {
-        return {
-            statusCode: 500,
-            headers,
-            body: JSON.stringify({ error: 'Lookup failed' })
-        };
+        console.error('Customer lookup error:', error);
+        return json(500, { error: 'Lookup failed' });
     } finally {
         if (connection) await connection.end();
     }

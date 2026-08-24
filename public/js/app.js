@@ -1,280 +1,237 @@
-// Configuration - UPDATE THIS WITH YOUR NETLIFY URL
-const API_BASE_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:8888/.netlify/functions'
-    : 'https://radiant-kangaroo-4adf64.netlify.app/.netlify/functions';
+const API_BASE_URL = '/.netlify/functions';
 
 let allProducts = [];
 
-// Initialize when page loads
+const byId = (id) => document.getElementById(id);
+const displayValue = (value, fallback = '—') =>
+    value === null || value === undefined || value === '' ? fallback : String(value);
+const money = (value) => `$${Number(value || 0).toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+})}`;
+
+function makeElement(tagName, text, className) {
+    const element = document.createElement(tagName);
+    if (text !== undefined) element.textContent = displayValue(text, '');
+    if (className) element.className = className;
+    return element;
+}
+
+function showMessage(container, message, isError = false) {
+    container.replaceChildren(makeElement('p', message, isError ? 'error' : 'status-message'));
+}
+
+async function requestJson(path) {
+    const response = await fetch(`${API_BASE_URL}${path}`, {
+        headers: { Accept: 'application/json' }
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(payload.error || 'The database request failed');
+    return payload;
+}
+
+function renderTable(title, columns, rows) {
+    const wrapper = document.createElement('div');
+    const heading = makeElement('h3', title);
+    const scroll = makeElement('div', undefined, 'table-scroll');
+    const table = document.createElement('table');
+    const caption = makeElement('caption', title, 'visually-hidden');
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    const tbody = document.createElement('tbody');
+
+    columns.forEach((column) => {
+        const header = makeElement('th', column.label);
+        header.scope = 'col';
+        headerRow.appendChild(header);
+    });
+
+    rows.forEach((row) => {
+        const tableRow = document.createElement('tr');
+        columns.forEach((column) => {
+            const rawValue = typeof column.value === 'function'
+                ? column.value(row)
+                : row[column.value];
+            const value = column.format ? column.format(rawValue, row) : displayValue(rawValue);
+            tableRow.appendChild(makeElement('td', value));
+        });
+        tbody.appendChild(tableRow);
+    });
+
+    thead.appendChild(headerRow);
+    table.append(caption, thead, tbody);
+    scroll.appendChild(table);
+    wrapper.append(heading, scroll);
+    return wrapper;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     loadProducts();
+    byId('search-input')?.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') searchProducts();
+    });
+    byId('customer-email')?.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') lookupCustomer();
+    });
 });
 
-// Load all products
 async function loadProducts() {
+    const container = byId('product-list');
+    showMessage(container, 'Loading fictional ShopFlow products…');
     try {
-        const response = await fetch(`${API_BASE_URL}/products`);
-        if (!response.ok) throw new Error('Failed to load products');
-        
-        allProducts = await response.json();
+        allProducts = await requestJson('/products');
         displayProducts(allProducts);
     } catch (error) {
         console.error('Error loading products:', error);
-        document.getElementById('product-list').innerHTML = 
-            '<p class="error">Failed to load products. Check console for details.</p>';
+        showMessage(container, error.message, true);
     }
 }
 
-// Display products
 function displayProducts(products) {
-    const container = document.getElementById('product-list');
-    
-    if (!products || products.length === 0) {
-        container.innerHTML = '<p>No products found.</p>';
+    const container = byId('product-list');
+    if (!Array.isArray(products) || products.length === 0) {
+        showMessage(container, 'No matching products were found.');
         return;
     }
-    
-    container.innerHTML = products.map(product => `
-        <div class="product-card">
-            <h3>${product.product_name}</h3>
-            <p class="product-category">${product.category}</p>
-            <p class="product-price">$${product.price}</p>
-            <p class="product-stock">Stock: ${product.stock_quantity}</p>
-        </div>
-    `).join('');
+
+    const cards = products.map((product) => {
+        const card = makeElement('article', undefined, 'product-card');
+        card.append(
+            makeElement('h3', product.product_name),
+            makeElement('p', product.category, 'product-category'),
+            makeElement('p', money(product.price), 'product-price'),
+            makeElement('p', `Stock: ${displayValue(product.stock_quantity, '0')}`, 'product-stock')
+        );
+        return card;
+    });
+    container.replaceChildren(...cards);
 }
 
-// Search products
 async function searchProducts() {
-    const searchTerm = document.getElementById('search-input').value;
-    
+    const searchTerm = byId('search-input').value.trim();
     if (!searchTerm) {
         displayProducts(allProducts);
         return;
     }
-    
+
+    const container = byId('product-list');
+    showMessage(container, 'Searching the fictional product catalog…');
     try {
-        const response = await fetch(`${API_BASE_URL}/search?q=${encodeURIComponent(searchTerm)}`);
-        const results = await response.json();
-        displayProducts(results);
+        displayProducts(await requestJson(`/search?q=${encodeURIComponent(searchTerm)}`));
     } catch (error) {
         console.error('Search failed:', error);
+        showMessage(container, error.message, true);
     }
 }
 
-// Filter by category
 function filterByCategory() {
-    const category = document.getElementById('category-filter').value;
-    
-    if (!category) {
-        displayProducts(allProducts);
-        return;
-    }
-    
-    const filtered = allProducts.filter(p => p.category === category);
-    displayProducts(filtered);
+    const category = byId('category-filter').value;
+    displayProducts(category ? allProducts.filter((product) => product.category === category) : allProducts);
 }
 
-// Filter by price
 function filterByPrice() {
-    const priceRange = document.getElementById('price-filter').value;
-    
-    if (!priceRange) {
-        displayProducts(allProducts);
-        return;
-    }
-    
-    let filtered;
-    if (priceRange === '0-50') {
-        filtered = allProducts.filter(p => p.price < 50);
-    } else if (priceRange === '50-100') {
-        filtered = allProducts.filter(p => p.price >= 50 && p.price <= 100);
-    } else if (priceRange === '100+') {
-        filtered = allProducts.filter(p => p.price > 100);
-    }
-    
-    displayProducts(filtered);
+    const priceRange = byId('price-filter').value;
+    const ranges = {
+        '0-50': (product) => Number(product.price) < 50,
+        '50-100': (product) => Number(product.price) >= 50 && Number(product.price) <= 100,
+        '100+': (product) => Number(product.price) > 100
+    };
+    displayProducts(ranges[priceRange] ? allProducts.filter(ranges[priceRange]) : allProducts);
 }
 
-// Customer lookup
 async function lookupCustomer() {
-    const email = document.getElementById('customer-email').value;
-    
+    const email = byId('customer-email').value.trim();
+    const result = byId('customer-result');
     if (!email) {
-        alert('Please enter an email address');
+        showMessage(result, 'Enter one of the fictional customer email addresses.', true);
         return;
     }
-    
+
+    showMessage(result, 'Looking up the fictional customer…');
     try {
-        const response = await fetch(`${API_BASE_URL}/customer?email=${encodeURIComponent(email)}`);
-        const customer = await response.json();
-        
-        const resultDiv = document.getElementById('customer-result');
-        if (customer) {
-            resultDiv.innerHTML = `
-                <div class="customer-info">
-                    <h3>${customer.first_name} ${customer.last_name}</h3>
-                    <p><strong>Email:</strong> ${customer.email}</p>
-                    <p><strong>Segment:</strong> ${customer.customer_segment}</p>
-                    <p><strong>Lifetime Value:</strong> $${customer.lifetime_value}</p>
-                    <p><strong>Status:</strong> ${customer.status}</p>
-                    <p><strong>Member Since:</strong> ${customer.registration_date}</p>
-                </div>
-            `;
-        } else {
-            resultDiv.innerHTML = '<p class="error">Customer not found</p>';
+        const customer = await requestJson(`/customer?email=${encodeURIComponent(email)}`);
+        if (!customer) {
+            showMessage(result, 'No fictional customer matched that email.');
+            return;
         }
+
+        const card = makeElement('article', undefined, 'customer-info');
+        card.append(
+            makeElement('h3', `${displayValue(customer.first_name, '')} ${displayValue(customer.last_name, '')}`.trim()),
+            makeElement('p', `Email: ${displayValue(customer.email)}`),
+            makeElement('p', `Segment: ${displayValue(customer.customer_segment)}`),
+            makeElement('p', `Lifetime value: ${money(customer.lifetime_value)}`),
+            makeElement('p', `Status: ${displayValue(customer.status)}`),
+            makeElement('p', `Member since: ${displayValue(customer.registration_date)}`)
+        );
+        result.replaceChildren(card);
     } catch (error) {
         console.error('Lookup failed:', error);
+        showMessage(result, error.message, true);
     }
 }
 
-// Analytics functions
-async function getTopProducts() {
+async function loadAnalytics(query, title, columns) {
+    const result = byId('analytics-result');
+    showMessage(result, 'Running the selected database analysis…');
     try {
-        const response = await fetch(`${API_BASE_URL}/analytics?query=top-products`);
-        const data = await response.json();
-        
-        document.getElementById('analytics-result').innerHTML = `
-            <h3>Top 10 Products by Revenue</h3>
-            <table>
-                <tr><th>Product</th><th>Category</th><th>Orders</th><th>Revenue</th></tr>
-                ${data.map(p => `
-                    <tr>
-                        <td>${p.product_name}</td>
-                        <td>${p.category}</td>
-                        <td>${p.times_ordered || 0}</td>
-                        <td>$${p.total_revenue || 0}</td>
-                    </tr>
-                `).join('')}
-            </table>
-        `;
+        const rows = await requestJson(`/analytics?query=${encodeURIComponent(query)}`);
+        result.replaceChildren(renderTable(title, columns, rows));
     } catch (error) {
         console.error('Analytics failed:', error);
-        document.getElementById('analytics-result').innerHTML = '<p class="error">Failed to load analytics</p>';
+        showMessage(result, error.message, true);
     }
 }
 
-async function getCustomerSegments() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/analytics?query=segments`);
-        const data = await response.json();
-        
-        document.getElementById('analytics-result').innerHTML = `
-            <h3>Customer Segmentation Analysis</h3>
-            <table>
-                <tr><th>Segment</th><th>Customers</th><th>Orders</th><th>Revenue</th></tr>
-                ${data.map(s => `
-                    <tr>
-                        <td>${s.customer_segment}</td>
-                        <td>${s.customer_count}</td>
-                        <td>${s.total_orders || 0}</td>
-                        <td>$${s.actual_revenue || 0}</td>
-                    </tr>
-                `).join('')}
-            </table>
-        `;
-    } catch (error) {
-        console.error('Analytics failed:', error);
-        document.getElementById('analytics-result').innerHTML = '<p class="error">Failed to load analytics</p>';
-    }
+function getTopProducts() {
+    return loadAnalytics('top-products', 'Top 10 products by delivered revenue', [
+        { label: 'Product', value: 'product_name' },
+        { label: 'Category', value: 'category' },
+        { label: 'Orders', value: 'times_ordered' },
+        { label: 'Revenue', value: 'total_revenue', format: money }
+    ]);
 }
 
-async function getRevenueByCategory() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/analytics?query=revenue`);
-        const data = await response.json();
-        
-        document.getElementById('analytics-result').innerHTML = `
-            <h3>Revenue by Category</h3>
-            <table>
-                <tr><th>Category</th><th>Orders</th><th>Units Sold</th><th>Revenue</th></tr>
-                ${data.map(c => `
-                    <tr>
-                        <td>${c.category}</td>
-                        <td>${c.order_count}</td>
-                        <td>${c.units_sold}</td>
-                        <td>$${c.revenue}</td>
-                    </tr>
-                `).join('')}
-            </table>
-        `;
-    } catch (error) {
-        console.error('Analytics failed:', error);
-        document.getElementById('analytics-result').innerHTML = '<p class="error">Failed to load analytics</p>';
-    }
+function getCustomerSegments() {
+    return loadAnalytics('segments', 'Active customer segments and delivered revenue', [
+        { label: 'Segment', value: 'customer_segment' },
+        { label: 'Customers', value: 'customer_count' },
+        { label: 'Delivered orders', value: 'total_orders' },
+        { label: 'Delivered revenue', value: 'actual_revenue', format: money }
+    ]);
 }
 
-async function getOrderStatus() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/analytics?query=orders`);
-        const data = await response.json();
-        
-        document.getElementById('analytics-result').innerHTML = `
-            <h3>Order Status Distribution</h3>
-            <table>
-                <tr><th>Status</th><th>Count</th><th>Percentage</th><th>Total Value</th></tr>
-                ${data.map(o => `
-                    <tr>
-                        <td>${o.order_status}</td>
-                        <td>${o.order_count}</td>
-                        <td>${o.percentage}%</td>
-                        <td>$${o.total_value}</td>
-                    </tr>
-                `).join('')}
-            </table>
-        `;
-    } catch (error) {
-        console.error('Analytics failed:', error);
-        document.getElementById('analytics-result').innerHTML = '<p class="error">Failed to load analytics</p>';
-    }
+function getRevenueByCategory() {
+    return loadAnalytics('revenue', 'Delivered revenue by category', [
+        { label: 'Category', value: 'category' },
+        { label: 'Orders', value: 'order_count' },
+        { label: 'Units sold', value: 'units_sold' },
+        { label: 'Revenue', value: 'revenue', format: money }
+    ]);
 }
 
-async function getMonthlySales() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/analytics?query=monthly-sales`);
-        const data = await response.json();
-        
-        document.getElementById('analytics-result').innerHTML = `
-            <h3>Monthly Sales Trend</h3>
-            <table>
-                <tr><th>Month</th><th>Orders</th><th>Customers</th><th>Revenue</th></tr>
-                ${data.map(m => `
-                    <tr>
-                        <td>${m.month}</td>
-                        <td>${m.orders}</td>
-                        <td>${m.unique_customers}</td>
-                        <td>$${m.revenue}</td>
-                    </tr>
-                `).join('')}
-            </table>
-        `;
-    } catch (error) {
-        console.error('Analytics failed:', error);
-        document.getElementById('analytics-result').innerHTML = '<p class="error">Failed to load analytics</p>';
-    }
+function getOrderStatus() {
+    return loadAnalytics('orders', 'Order status distribution', [
+        { label: 'Status', value: 'order_status' },
+        { label: 'Count', value: 'order_count' },
+        { label: 'Percentage', value: 'percentage', format: (value) => `${displayValue(value, '0')}%` },
+        { label: 'Order value', value: 'total_value', format: money }
+    ]);
 }
 
-async function getProductPerformance() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/analytics?query=product-performance`);
-        const data = await response.json();
-        
-        document.getElementById('analytics-result').innerHTML = `
-            <h3>Product Performance Analysis</h3>
-            <table>
-                <tr><th>Category</th><th>Product Count</th><th>Avg Stock Level</th></tr>
-                ${data.map(p => `
-                    <tr>
-                        <td>${p.performance_category}</td>
-                        <td>${p.product_count}</td>
-                        <td>${Math.round(p.avg_stock || 0)}</td>
-                    </tr>
-                `).join('')}
-            </table>
-        `;
-    } catch (error) {
-        console.error('Analytics failed:', error);
-        document.getElementById('analytics-result').innerHTML = '<p class="error">Failed to load analytics</p>';
-    }
+function getMonthlySales() {
+    return loadAnalytics('monthly-sales', 'Monthly delivered sales trend', [
+        { label: 'Month', value: 'month' },
+        { label: 'Orders', value: 'orders' },
+        { label: 'Customers', value: 'unique_customers' },
+        { label: 'Revenue', value: 'revenue', format: money }
+    ]);
+}
+
+function getProductPerformance() {
+    return loadAnalytics('product-performance', 'Product performance categories', [
+        { label: 'Performance', value: 'performance_category' },
+        { label: 'Products', value: 'product_count' },
+        { label: 'Average stock', value: 'avg_stock', format: (value) => Math.round(Number(value || 0)) }
+    ]);
 }
