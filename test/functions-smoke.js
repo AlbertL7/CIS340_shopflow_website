@@ -56,9 +56,12 @@ async function run() {
     assert.equal((await analytics({ httpMethod: 'GET', queryStringParameters: { query: 'top-products' } })).statusCode, 200);
     assert.doesNotMatch(executed.at(-1).sql, /JOIN\s+reviews/i);
     assert.match(executed.at(-1).sql, /order_status\s*=\s*'Delivered'/i);
+    assert.match(executed.at(-1).sql, /SUM\s*\(\s*oi\.quantity\s*\*\s*oi\.unit_price\s*\)/i);
 
     assert.equal((await analytics({ httpMethod: 'GET', queryStringParameters: { query: 'segments' } })).statusCode, 200);
     assert.match(executed.at(-1).sql, /o\.order_status\s*=\s*'Delivered'/i);
+    assert.match(executed.at(-1).sql, /JOIN\s+order_items\s+oi/i);
+    assert.match(executed.at(-1).sql, /SUM\s*\(\s*oi\.quantity\s*\*\s*oi\.unit_price\s*\)/i);
 
     const clientJs = fs.readFileSync(path.join(__dirname, '../public/js/app.js'), 'utf8');
     assert.match(clientJs, /API_BASE_URL\s*=\s*'\/\.netlify\/functions'/);
