@@ -37,7 +37,7 @@ The browser never receives database credentials and never connects directly to M
 - Product catalog with search and filters
 - Fictional customer lookup with selected fields only
 - Business analytics dashboard
-- Delivered-revenue metrics that use one consistent status rule
+- Delivered-revenue metrics that sum `order_items.quantity * order_items.unit_price` at the order-item grain
 
 ## Security expectations
 

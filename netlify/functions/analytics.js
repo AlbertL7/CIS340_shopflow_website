@@ -20,7 +20,7 @@ exports.handler = async (event) => {
                         p.category,
                         COUNT(DISTINCT oi.order_id) as times_ordered,
                         SUM(oi.quantity) as total_quantity_sold,
-                        ROUND(SUM(oi.line_total), 2) as total_revenue
+                        ROUND(SUM(oi.quantity * oi.unit_price), 2) as total_revenue
                     FROM products p
                     INNER JOIN order_items oi ON p.product_id = oi.product_id
                     INNER JOIN orders o ON oi.order_id = o.order_id
@@ -37,12 +37,12 @@ exports.handler = async (event) => {
                         c.customer_segment,
                         COUNT(DISTINCT c.customer_id) as customer_count,
                         COUNT(DISTINCT o.order_id) as total_orders,
-                        ROUND(AVG(c.lifetime_value), 2) as avg_ltv,
-                        ROUND(SUM(o.total_amount), 2) as actual_revenue
+                        ROUND(SUM(oi.quantity * oi.unit_price), 2) as actual_revenue
                     FROM customers c
                     LEFT JOIN orders o
                         ON c.customer_id = o.customer_id
                        AND o.order_status = 'Delivered'
+                    LEFT JOIN order_items oi ON o.order_id = oi.order_id
                     WHERE c.status = 'Active'
                     GROUP BY c.customer_segment
                     ORDER BY actual_revenue DESC
@@ -55,7 +55,7 @@ exports.handler = async (event) => {
                         p.category,
                         COUNT(DISTINCT o.order_id) as order_count,
                         SUM(oi.quantity) as units_sold,
-                        ROUND(SUM(oi.line_total), 2) as revenue,
+                        ROUND(SUM(oi.quantity * oi.unit_price), 2) as revenue,
                         ROUND(AVG(oi.unit_price), 2) as avg_price
                     FROM products p
                     INNER JOIN order_items oi ON p.product_id = oi.product_id
@@ -83,13 +83,14 @@ exports.handler = async (event) => {
             case 'monthly-sales':
                 query = `
                     SELECT 
-                        DATE_FORMAT(order_date, '%Y-%m') as month,
-                        COUNT(DISTINCT order_id) as orders,
-                        COUNT(DISTINCT customer_id) as unique_customers,
-                        ROUND(SUM(total_amount), 2) as revenue
-                    FROM orders
-                    WHERE order_status = 'Delivered'
-                    GROUP BY DATE_FORMAT(order_date, '%Y-%m')
+                        DATE_FORMAT(o.order_date, '%Y-%m') as month,
+                        COUNT(DISTINCT o.order_id) as orders,
+                        COUNT(DISTINCT o.customer_id) as unique_customers,
+                        ROUND(SUM(oi.quantity * oi.unit_price), 2) as revenue
+                    FROM orders o
+                    INNER JOIN order_items oi ON o.order_id = oi.order_id
+                    WHERE o.order_status = 'Delivered'
+                    GROUP BY DATE_FORMAT(o.order_date, '%Y-%m')
                     ORDER BY month DESC
                     LIMIT 12
                 `;
