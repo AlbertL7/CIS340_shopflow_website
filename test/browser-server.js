@@ -45,7 +45,9 @@ http.createServer((request, response) => {
     const files = {
         '/': ['index.html', 'text/html; charset=utf-8'],
         '/index.html': ['index.html', 'text/html; charset=utf-8'],
+        '/troubleshooting.html': ['troubleshooting.html', 'text/html; charset=utf-8'],
         '/css/style.css': ['css/style.css', 'text/css; charset=utf-8'],
+        '/css/troubleshooting.css': ['css/troubleshooting.css', 'text/css; charset=utf-8'],
         '/js/app.js': ['js/app.js', 'text/javascript; charset=utf-8']
     };
     const selected = files[url.pathname];

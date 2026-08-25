@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A beginner-friendly guide for tracing and repairing the ShopFlow connection from the browser through Netlify to Aiven MySQL.">
+    <title>Troubleshoot ShopFlow | CISS 340</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/troubleshooting.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="guide-page">
+    <a class="skip-link" href="#main-content">Skip to troubleshooting steps</a>
+
+    <header class="hero-header guide-hero">
+        <div class="header-content guide-header-content">
+            <a class="logo guide-logo" href="index.html" aria-label="ShopFlow Analytics home">
+                <i class="fas fa-database" aria-hidden="true"></i>
+                <span class="site-name">ShopFlow Analytics</span>
+            </a>
+            <nav aria-label="Primary navigation">
+                <a href="index.html"><i class="fas fa-store" aria-hidden="true"></i> Live demo</a>
+                <a href="troubleshooting.html" aria-current="page"><i class="fas fa-life-ring" aria-hidden="true"></i> Troubleshooting</a>
+            </nav>
+        </div>
+
+        <div class="guide-banner">
+            <p class="eyebrow">CISS 340 connection field guide</p>
+            <h1>Trace the request. Fix the first broken handoff.</h1>
+            <p class="guide-lead">ShopFlow works like a relay race. Follow the request one runner at a time—from the page, to the function, to the database, and back as JSON.</p>
+            <div class="hero-actions">
+                <a class="btn btn-primary" href="#start"><i class="fas fa-stethoscope" aria-hidden="true"></i> Start diagnosing</a>
+                <a class="btn btn-secondary" href="/.netlify/functions/products"><i class="fas fa-code" aria-hidden="true"></i> Safely test the products API</a>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content" class="guide-main">
+        <aside class="incident-card" aria-labelledby="incident-title">
+            <div class="incident-icon" aria-hidden="true"><i class="fas fa-magnifying-glass"></i></div>
+            <div>
+                <p class="eyebrow">What our ShopFlow rehearsal taught us</p>
+                <h2 id="incident-title">One visible error can hide several separate problems</h2>
+                <p>The function first stopped because <code>DB_CA_CERT</code> was missing and the deployed variable names did not match the code. Behind that, the read-only database user was absent and all seven tables were empty because the Colab load did not finish. A stale notebook output made the load look successful, and an administrator credential had been placed in notebook code.</p>
+                <p><strong>The lesson:</strong> do not guess or change everything at once. Find the first broken handoff, repair it, then test the next one. If a credential was exposed, rotate it before continuing and move it into a secret store.</p>
+            </div>
+        </aside>
+
+        <nav class="guide-toc" aria-label="On this page">
+            <p>Jump to a checkpoint</p>
+            <div>
+                <a href="#flow">Follow the data flow</a>
+                <a href="#status-codes">Read the status code</a>
+                <a href="#configuration">Check configuration</a>
+                <a href="#data-load">Verify the CSV load</a>
+                <a href="#logs">Use the logs</a>
+                <a href="#safe-test">Test safely</a>
+            </div>
+        </nav>
+
+        <section id="flow" class="guide-section" aria-labelledby="flow-title">
+            <div class="section-kicker"><span>1</span> Build the mental model</div>
+            <h2 id="flow-title">Follow one request all the way around</h2>
+            <p class="section-intro">The browser never connects directly to MySQL and never receives a database password. Each layer has one job.</p>
+
+            <ol class="request-flow">
+                <li>
+                    <span class="flow-number">1</span>
+                    <div><strong>Browser</strong><span>You click Products, Search, or an Analytics button.</span></div>
+                </li>
+                <li>
+                    <span class="flow-number">2</span>
+                    <div><strong>Netlify page</strong><span><code>app.js</code> sends a same-origin <code>GET</code> request.</span></div>
+                </li>
+                <li>
+                    <span class="flow-number">3</span>
+                    <div><strong>Netlify Function</strong><span>Server-side code reads protected configuration and prepares a parameterized query.</span></div>
+                </li>
+                <li>
+                    <span class="flow-number">4</span>
+                    <div><strong>Aiven MySQL</strong><span>The <code>shopflow_reader</code> account runs a read-only <code>SELECT</code> over TLS.</span></div>
+                </li>
+                <li>
+                    <span class="flow-number">5</span>
+                    <div><strong>JSON</strong><span>The function returns selected rows as data—not as database credentials.</span></div>
+                </li>
+                <li>
+                    <span class="flow-number">6</span>
+                    <div><strong>Browser</strong><span>The page turns the JSON into product cards, a customer result, or an analytics table.</span></div>
+                </li>
+            </ol>
+
+            <div class="concept-callout">
+                <i class="fas fa-house-signal" aria-hidden="true"></i>
+                <div>
+                    <h3>Why “same origin” matters</h3>
+                    <p>The page calls <code>/.netlify/functions/products</code>, a path on the same deployed ShopFlow site. It should not contain an old Netlify domain, an Aiven hostname, or a direct MySQL connection. The relative path lets the browser contact its own server-side function without publishing secrets or creating an unnecessary cross-origin request.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="start" class="guide-section" aria-labelledby="start-title">
+            <div class="section-kicker"><span>2</span> Locate the break</div>
+            <h2 id="start-title">Start with the smallest safe test</h2>
+            <div class="two-column">
+                <article class="step-card">
+                    <span class="card-label">Page test</span>
+                    <h3>Does the ShopFlow page load?</h3>
+                    <p>If the page itself is missing, solve the deployment or file-path problem before investigating MySQL.</p>
+                </article>
+                <article class="step-card">
+                    <span class="card-label">Function test</span>
+                    <h3>Does the products endpoint return JSON?</h3>
+                    <p>Open <a href="/.netlify/functions/products"><code>/.netlify/functions/products</code></a>. A JSON array means the page-to-function route works. An error object plus a status code tells you where to look next.</p>
+                </article>
+            </div>
+
+            <ol class="diagnostic-list">
+                <li><span>1</span><div><strong>Write down the action.</strong> Example: “I reloaded Products at 2:14 p.m.”</div></li>
+                <li><span>2</span><div><strong>Open Developer Tools → Network.</strong> Select the request beginning with <code>/.netlify/functions/</code>.</div></li>
+                <li><span>3</span><div><strong>Record only safe evidence.</strong> Note the path, method, status code, and sanitized error message. Do not capture request headers, environment variables, connection strings, or credentials.</div></li>
+                <li><span>4</span><div><strong>Fix one layer.</strong> Redeploy when configuration or function code changes, then repeat the same test.</div></li>
+            </ol>
+        </section>
+
+        <section id="status-codes" class="guide-section" aria-labelledby="status-title">
+            <div class="section-kicker"><span>3</span> Let the response guide you</div>
+            <h2 id="status-title">The status code is a road sign</h2>
+            <div class="status-table-wrap">
+                <table class="status-table">
+                    <caption>Common ShopFlow HTTP responses and what to check first</caption>
+                    <thead>
+                        <tr><th scope="col">Status</th><th scope="col">Plain meaning</th><th scope="col">First place to look</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row"><span class="status-badge status-404">404</span></th>
+                            <td>The requested page or function path was not found.</td>
+                            <td>Spelling, deployed file, function filename, and the current production deploy. A 404 does not prove the database is down.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><span class="status-badge status-400">400</span></th>
+                            <td>The function received the request, but the input was invalid or missing.</td>
+                            <td>Required query parameters. For example, Search needs <code>?q=term</code> and Analytics needs a supported <code>?query=</code> value.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><span class="status-badge status-405">405</span></th>
+                            <td>The path exists, but the HTTP method is not allowed.</td>
+                            <td>Use <code>GET</code>. ShopFlow’s public functions are deliberately read-only and reject <code>POST</code>, <code>PUT</code>, and <code>DELETE</code>.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><span class="status-badge status-500">500</span></th>
+                            <td>The function started and then failed on the server.</td>
+                            <td>Netlify Function logs, exact environment-variable names, TLS certificate, Aiven service, reader access, schema, or SQL.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><span class="status-badge status-200">200</span></th>
+                            <td>The request succeeded. An empty array <code>[]</code> still counts as success.</td>
+                            <td>If the page is empty, check table row counts, active-status filters, search text, and joins—not the network connection.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="configuration" class="guide-section" aria-labelledby="configuration-title">
+            <div class="section-kicker"><span>4</span> Repair the server connection</div>
+            <h2 id="configuration-title">Check configuration by name, purpose, and scope</h2>
+            <p class="section-intro">Netlify variable names are case-sensitive. <code>host</code> and <code>DB_HOST</code> are different names. ShopFlow expects exactly these six keys; the values stay private.</p>
+
+            <ul class="key-grid" aria-label="Required Netlify environment-variable names">
+                <li><code>DB_HOST</code><span>Aiven service host</span></li>
+                <li><code>DB_PORT</code><span>Aiven service port</span></li>
+                <li><code>DB_USER</code><span>Read-only website account</span></li>
+                <li><code>DB_PASSWORD</code><span>Reader account secret</span></li>
+                <li><code>DB_NAME</code><span>ShopFlow schema name</span></li>
+                <li><code>DB_CA_CERT</code><span>Complete Aiven CA certificate</span></li>
+            </ul>
+
+            <div class="concept-callout">
+                <i class="fas fa-shield-halved" aria-hidden="true"></i>
+                <div>
+                    <h3>Classify secrets without disabling the scanner</h3>
+                    <p>Mark <code>DB_PASSWORD</code> and <code>DB_CA_CERT</code> as secret values. Keep <code>DB_HOST</code>, <code>DB_PORT</code>, <code>DB_USER</code>, and <code>DB_NAME</code> as ordinary environment variables, while still keeping their values out of student evidence. If a common value such as <code>shopflow</code> or <code>shopflow_reader</code> is marked as a secret, Netlify can correctly find that same text in the README or tests and stop the build. Reclassify the variable and redeploy; do not turn off secret scanning.</p>
+                </div>
+            </div>
+
+            <div class="warning-callout">
+                <i class="fas fa-triangle-exclamation" aria-hidden="true"></i>
+                <div><strong>Never put the values in browser JavaScript.</strong> Do not commit a <code>.env</code> file or paste passwords, certificates, tokens, connection strings, or screenshots of them into GitHub, Canvas, chat, or an AI prompt. If a credential is exposed, rotate it first. For a shared class resource, stop and notify the instructor.</div>
+            </div>
+
+            <div class="three-column">
+                <article class="step-card">
+                    <span class="card-label">TLS</span>
+                    <h3>Keep the certificate complete</h3>
+                    <p><code>DB_CA_CERT</code> must include the beginning line, ending line, and preserved line breaks from the CA certificate for the same Aiven service.</p>
+                    <p>Do not “fix” TLS by setting <code>rejectUnauthorized</code> to <code>false</code>. Correct the certificate instead.</p>
+                </article>
+                <article class="step-card">
+                    <span class="card-label">Least privilege</span>
+                    <h3>Deploy the reader—not the administrator</h3>
+                    <p>The website should connect as <code>shopflow_reader</code> with <code>SELECT</code> on <code>shopflow.*</code> only. The administrator account is for initial setup and recovery, never for Netlify.</p>
+                    <p>Connected as the reader, <code>SHOW GRANTS;</code> should not show <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, or administrative privileges.</p>
+                </article>
+                <article class="step-card">
+                    <span class="card-label">Redeploy</span>
+                    <h3>Configuration changes need a fresh run</h3>
+                    <p>After adding or correcting Netlify variables, trigger a new deploy and wait until it is published. Testing an older deploy only repeats the old configuration.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="data-load" class="guide-section" aria-labelledby="data-title">
+            <div class="section-kicker"><span>5</span> Prove the data exists</div>
+            <h2 id="data-title">A successful connection can still return no products</h2>
+            <p class="section-intro">Notebook output is like a photograph: it shows what happened during an earlier run, not what the current cell or database contains now. A printed “rows loaded” message is not proof until MySQL reports the rows.</p>
+
+            <div class="two-column data-columns">
+                <div>
+                    <h3>Validate the seven file-to-table mappings</h3>
+                    <div class="status-table-wrap">
+                        <table class="mapping-table">
+                            <caption>ShopFlow CSV files and destination tables</caption>
+                            <thead><tr><th scope="col">Instructor CSV</th><th scope="col">MySQL table</th><th scope="col">Expected rows</th></tr></thead>
+                            <tbody>
+                                <tr><td><code>customers_data.csv</code></td><td><code>customers</code></td><td>20</td></tr>
+                                <tr><td><code>products_catalog.csv</code></td><td><code>products</code></td><td>20</td></tr>
+                                <tr><td><code>orders_history.csv</code></td><td><code>orders</code></td><td>20</td></tr>
+                                <tr><td><code>order_items_detail.csv</code></td><td><code>order_items</code></td><td>49</td></tr>
+                                <tr><td><code>product_reviews.csv</code></td><td><code>reviews</code></td><td>15</td></tr>
+                                <tr><td><code>abandoned_carts.csv</code></td><td><code>abandoned_carts</code></td><td>10</td></tr>
+                                <tr><td><code>customer_support_tickets.csv</code></td><td><code>support_tickets</code></td><td>10</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div>
+                    <h3>Use Colab without exposing credentials</h3>
+                    <ol class="compact-steps">
+                        <li>Store private connection values in <strong>Colab Secrets</strong> using the key icon—not in a code cell.</li>
+                        <li>Restart or reconnect the runtime if needed, then run required cells in order.</li>
+                        <li>Confirm each CSV was actually read and cleaned. Check the current DataFrame row count.</li>
+                        <li>Run the load cell and wait for completion. An interrupted cell did not finish just because older output remains visible.</li>
+                        <li>Do not rerun a schema-reset cell after loading unless you intend to erase the tables and immediately reload all seven files. Keep the guarded reset switch off during normal work.</li>
+                        <li>Query MySQL after the load. Compare table counts with the cleaned DataFrame counts and investigate every mismatch.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3 class="query-heading">Run this read-only row-count check in the <code>shopflow</code> schema</h3>
+            <pre class="code-block"><code>SELECT 'customers' AS table_name, COUNT(*) AS row_count FROM customers
+UNION ALL SELECT 'products', COUNT(*) FROM products
+UNION ALL SELECT 'orders', COUNT(*) FROM orders
+UNION ALL SELECT 'order_items', COUNT(*) FROM order_items
+UNION ALL SELECT 'reviews', COUNT(*) FROM reviews
+UNION ALL SELECT 'abandoned_carts', COUNT(*) FROM abandoned_carts
+UNION ALL SELECT 'support_tickets', COUNT(*) FROM support_tickets;</code></pre>
+            <p class="query-note"><strong>Interpret the result:</strong> missing tables mean schema creation or naming failed; zero rows mean the load did not persist; counts lower than the cleaned CSVs mean the load was partial or rows were rejected. Load parent tables such as <code>customers</code> and <code>products</code> before child tables that reference them.</p>
+        </section>
+
+        <section id="logs" class="guide-section" aria-labelledby="logs-title">
+            <div class="section-kicker"><span>6</span> Read the server’s evidence</div>
+            <h2 id="logs-title">Match one failed request to one Function log</h2>
+            <p class="section-intro">The browser normally sees a safe message such as “Database request failed.” The Netlify Function log contains the useful server-side clue.</p>
+
+            <div class="log-grid">
+                <article><code>DB_CA_CERT is not configured</code><p>The exact key is absent, misspelled, lowercased, scoped incorrectly, or not included in the current deploy.</p></article>
+                <article><code>Access denied for user</code><p>Check that the reader account exists, its private value is current in Netlify, and it has <code>SELECT</code> on <code>shopflow.*</code>.</p></article>
+                <article><code>unable to verify…</code><p>The CA is missing, incomplete, has damaged line breaks, or came from a different service. Replace the certificate; do not disable verification.</p></article>
+                <article><code>ECONNREFUSED / ETIMEDOUT</code><p>Check whether Aiven is running and whether the private host and port are correct. Do not paste either value into a report.</p></article>
+                <article><code>Table … doesn't exist</code><p>Confirm <code>DB_NAME</code>, the seven table names, and that schema creation completed in the intended database.</p></article>
+                <article><code>200 with []</code><p>This is not a connection error. Check row counts, <code>status = 'Active'</code>, search input, date filters, and join conditions.</p></article>
+            </div>
+
+            <div class="concept-callout log-routine">
+                <i class="fas fa-list-check" aria-hidden="true"></i>
+                <div>
+                    <h3>A good log routine</h3>
+                    <p>Note the test time → run one request → open that function’s log → find the matching timestamp → read the first meaningful error → fix that layer → redeploy → repeat. Share only a redacted excerpt if you need help.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="safe-test" class="guide-section" aria-labelledby="safe-title">
+            <div class="section-kicker"><span>7</span> Confirm the complete circuit</div>
+            <h2 id="safe-title">Use a read-only end-to-end test</h2>
+            <div class="test-sequence">
+                <div><span>1</span><p><strong>Products endpoint</strong> returns status 200 and a non-empty JSON array.</p></div>
+                <div><span>2</span><p><strong>Products page</strong> renders cards from that JSON without a console error.</p></div>
+                <div><span>3</span><p><strong>Search</strong> returns expected fictional products for a short term and returns 400 for missing input.</p></div>
+                <div><span>4</span><p><strong>Customer lookup</strong> uses only an instructor-provided fictional email and reveals only the intended fields.</p></div>
+                <div><span>5</span><p><strong>Analytics</strong> returns one selected result that matches the equivalent verified notebook query.</p></div>
+                <div><span>6</span><p><strong>Network evidence</strong> shows same-origin <code>GET</code> requests. No browser source, response, or screenshot contains credentials.</p></div>
+            </div>
+
+            <div class="final-check">
+                <div>
+                    <p class="eyebrow">Before you call it fixed</p>
+                    <h3>Explain the result in your own words</h3>
+                    <p>Button click → same-origin Function endpoint → parameterized <code>SELECT</code> → <code>shopflow</code> table(s) → JSON response → page update.</p>
+                </div>
+                <a class="btn btn-primary" href="index.html"><i class="fas fa-arrow-left" aria-hidden="true"></i> Return to ShopFlow</a>
+            </div>
+        </section>
+
+        <section class="help-card" aria-labelledby="help-title">
+            <i class="fas fa-hands-helping" aria-hidden="true"></i>
+            <div>
+                <h2 id="help-title">Still stuck? Bring evidence, not secrets.</h2>
+                <p>Tell your instructor which button you used, the sanitized request path, HTTP method, status code, test time, current deploy identifier, the first redacted log message, and the table row counts. Never send a password, certificate, host, port, connection string, token, <code>.env</code> file, or unredacted screenshot.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="tech-footer">
+        <div class="footer-content">
+            <p><a href="index.html">ShopFlow live demo</a> · CISS 340 guided database analytics project</p>
+            <p>All displayed records are realistic, instructor-provided fictional data.</p>
+        </div>
+    </footer>
+</body>
+</html>

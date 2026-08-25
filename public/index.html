@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <!-- Hero Header with Animation -->
     <header class="hero-header">
         <div class="lightning-bg"></div>
@@ -17,10 +18,11 @@
                 <i class="fas fa-database"></i>
                 <h1>ShopFlow Analytics</h1>
             </div>
-            <nav>
+            <nav aria-label="Primary navigation">
                 <a href="#products"><i class="fas fa-shopping-cart"></i> Products</a>
                 <a href="#analytics"><i class="fas fa-chart-line"></i> Analytics</a>
                 <a href="#customer-lookup"><i class="fas fa-users"></i> Customers</a>
+                <a href="troubleshooting.html"><i class="fas fa-life-ring"></i> Troubleshooting</a>
             </nav>
         </div>
         <div class="hero-banner">
@@ -43,7 +45,7 @@
         </div>
     </header>
 
-    <main>
+    <main id="main-content">
         <!-- Search Section with Icons -->
         <section id="search-section" class="glass-effect">
             <div class="section-header">
@@ -59,7 +61,7 @@
                         <i class="fas fa-bolt"></i> Search
                     </button>
                 </div>
-                
+
                 <label class="visually-hidden" for="category-filter">Filter by product category</label>
                 <select id="category-filter" onchange="filterByCategory()" class="filter-select">
                     <option value="">All Categories</option>
@@ -69,7 +71,7 @@
                     <option value="Sports">Sports</option>
                     <option value="Books">Books</option>
                 </select>
-                
+
                 <label class="visually-hidden" for="price-filter">Filter by product price</label>
                 <select id="price-filter" onchange="filterByPrice()" class="filter-select">
                     <option value="">All Prices</option>
@@ -155,6 +157,7 @@
                     <span><i class="fas fa-lock"></i> SSL/TLS</span>
                 </div>
             </div>
+            <p class="footer-help"><a href="troubleshooting.html">Having trouble connecting ShopFlow? Open the student troubleshooting guide.</a></p>
             <p>&copy; 2026 ShopFlow - CISS 340 guided database analytics project</p>
         </div>
     </footer>

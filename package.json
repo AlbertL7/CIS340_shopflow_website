@@ -14,7 +14,7 @@
   "scripts": {
     "dev": "netlify dev",
     "deploy": "netlify deploy --prod",
-    "test": "node test/functions-smoke.js",
+    "test": "node test/functions-smoke.js && node test/site-content-smoke.js",
     "preview:test": "node test/browser-server.js"
   }
 }

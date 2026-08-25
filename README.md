@@ -33,6 +33,20 @@ The browser never receives database credentials and never connects directly to M
 4. Deploy and wait until Netlify reports the production deploy as published.
 5. Test `/.netlify/functions/products`, one search, and one analytics request before testing the page.
 
+## Production recovery checklist
+
+Use this order when the page loads but database features fail. Repair and retest one handoff at a time.
+
+1. **Contain exposed secrets.** Rotate any credential that appeared in notebook code, GitHub, logs, screenshots, or a prompt. Move notebook values into Colab Secrets. Never record actual values in this README or an issue.
+2. **Confirm Aiven is running.** Verify the intended MySQL 8.4 service and `shopflow` schema without sharing the host, port, password, certificate, or connection string.
+3. **Prove the data load.** Run `SHOW TABLES` and read-only row counts for all seven tables. Re-run an incomplete loader from the secret-backed notebook, then compare persisted table counts with the cleaned CSV counts. Treat old cell output as stale until the database confirms it.
+4. **Verify least privilege.** Create or restore `shopflow_reader` outside source control and grant only `SELECT` on `shopflow.*`. Never deploy `avnadmin`. Use `SHOW GRANTS` while connected as the reader to confirm the scope.
+5. **Check the six exact Netlify keys.** Confirm `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, and `DB_CA_CERT`. Names are case-sensitive. Mark only `DB_PASSWORD` and `DB_CA_CERT` as secret values; marking ordinary values such as `shopflow` as secrets can make Netlify's scanner stop a build when that expected text appears in documentation or tests. Store the full CA certificate with its line breaks and keep TLS verification enabled.
+6. **Redeploy the corrected configuration.** Wait for the current production deploy to publish; do not test an older deploy.
+7. **Test from the inside out.** Check the Function log, then `/.netlify/functions/products`, one search, one customer lookup using fictional data, one analytics response, and finally the rendered page. Expect same-origin `GET` requests and JSON responses.
+
+The public [student troubleshooting guide](public/troubleshooting.html) explains the request flow, HTTP status codes, CSV validation, logs, and safe evidence collection without exposing credentials.
+
 ## Features
 - Product catalog with search and filters
 - Fictional customer lookup with selected fields only
