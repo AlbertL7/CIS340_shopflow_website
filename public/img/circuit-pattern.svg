@@ -2,12 +2,12 @@
   <!--
     Tileable circuit-board pattern. A 320x320 unit that repeats cleanly, using
     right-angle PCB traces + filled junction nodes. Ported from the samscout
-    marketing site and recolored to the Bulwark Black gold accent (#e0b64d).
+    marketing site and recolored to the Osaka Jade green (#63b07a).
     Applied at very low opacity in CircuitBackground.astro so it reads as
     ambient texture, not a foreground element. Thin strokes (0.8px) keep it
     fine detail rather than noise.
   -->
-  <g stroke="#e0b64d" stroke-width="0.8" fill="none" stroke-linecap="square">
+  <g stroke="#63b07a" stroke-width="0.8" fill="none" stroke-linecap="square">
     <!-- Horizontal trace runs -->
     <path d="M0,60 L80,60 L80,90 L160,90 L160,60 L240,60 L240,30 L320,30" />
     <path d="M0,180 L40,180 L40,150 L130,150 L130,180 L210,180 L210,210 L320,210" />
@@ -24,7 +24,7 @@
     <path d="M160,90 L160,120 L190,120 L190,160" />
     <path d="M230,150 L230,110 L260,110 L260,140" />
   </g>
-  <g fill="#e0b64d">
+  <g fill="#63b07a">
     <!-- Junction nodes -->
     <circle cx="80" cy="60" r="2.5" />
     <circle cx="80" cy="90" r="2.5" />

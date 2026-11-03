@@ -1,7 +1,8 @@
-// Decorative circuit-board background, modeled on bulwarkblack.com.
-// A few gold "current" pulses travel along the traces drawn in
-// img/circuit-pattern.svg. Purely visual: it never touches app.js or the API.
-// Phones and reduced-motion users get the static pattern only.
+// Decorative circuit-board banner background, modeled on bulwarkblack.com.
+// A few glowing "current" pulses travel along the traces drawn in
+// img/circuit-pattern.svg, inside the hero banner that holds #circuit-bg.
+// Purely visual: it never touches app.js or the API. Phones and
+// reduced-motion users get the static pattern only.
 (function () {
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
@@ -38,20 +39,22 @@
         if (!layer) return;
         layer.textContent = '';
 
-        const width = window.innerWidth;
-        const height = window.innerHeight;
-        if (width < 640) return;
+        const width = layer.clientWidth;
+        const height = layer.clientHeight;
+        if (window.innerWidth < 640 || !width || !height) return;
 
         const cols = Math.ceil(width / STEP);
-        const rows = Math.ceil(height / STEP);
-        const count = Math.max(3, Math.min(10, Math.round((width * height) / 150000)));
+        // Skip the bottom of the banner, which fades into the page.
+        const rows = Math.max(1, Math.ceil((height * 0.7) / STEP));
+        const count = Math.max(6, Math.min(16, Math.round((width * height) / 60000)));
 
         const svg = document.createElementNS(SVGNS, 'svg');
         svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
         svg.setAttribute('preserveAspectRatio', 'none');
 
+        // Favor the three long horizontal runs so pulses visibly streak across.
         const pickTrace = () => place(
-            TRACES[Math.floor(Math.random() * TRACES.length)],
+            TRACES[Math.floor(Math.random() * (Math.random() < 0.6 ? 3 : TRACES.length))],
             Math.floor(Math.random() * cols),
             Math.floor(Math.random() * rows)
         );

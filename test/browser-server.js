@@ -50,6 +50,7 @@ http.createServer((request, response) => {
         '/css/troubleshooting.css': ['css/troubleshooting.css', 'text/css; charset=utf-8'],
         '/js/app.js': ['js/app.js', 'text/javascript; charset=utf-8'],
         '/js/circuit.js': ['js/circuit.js', 'text/javascript; charset=utf-8'],
+        '/js/storefront.js': ['js/storefront.js', 'text/javascript; charset=utf-8'],
         '/img/circuit-pattern.svg': ['img/circuit-pattern.svg', 'image/svg+xml']
     };
     const selected = files[url.pathname];

@@ -1,13 +1,13 @@
-/* Bulwark Black palette from style.css: gold accent, teal for "data" cues */
+/* Osaka Jade palette from style.css */
 .guide-page {
-    --guide-ink: var(--ink);
-    --guide-muted: #b3bcc8;
-    --guide-panel: rgba(25, 24, 22, 0.94);
-    --guide-panel-soft: var(--bg-2);
-    --guide-line: rgba(255, 255, 255, 0.1);
-    --guide-accent: var(--accent);
-    --guide-green: var(--intel);
-    --guide-amber: var(--accent-bright);
+    --guide-ink: var(--ink-soft);
+    --guide-muted: var(--muted);
+    --guide-panel: var(--surface);
+    --guide-panel-soft: var(--surface-2);
+    --guide-line: var(--line-strong);
+    --guide-accent: var(--cyan);
+    --guide-green: var(--accent-bright);
+    --guide-amber: var(--yellow);
     line-height: 1.65;
 }
 
@@ -20,9 +20,16 @@
     overflow-wrap: anywhere;
 }
 
-/* The banner carries its own padding, so the shared .hero adds none */
 .guide-hero {
     padding: 0 1rem;
+}
+
+.guide-page .eyebrow {
+    color: var(--cyan);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 }
 
 .guide-banner {
@@ -37,11 +44,9 @@
 .guide-banner h1 {
     max-width: 900px;
     margin: 1.25rem auto 0;
-    font-size: clamp(2.35rem, 7vw, 4.75rem);
-    font-weight: 600;
-    line-height: 1.02;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    font-size: clamp(2.35rem, 6vw, 4.25rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
     text-wrap: balance;
 }
 
@@ -85,7 +90,7 @@
     gap: 1.25rem;
     padding: clamp(1.4rem, 4vw, 2.2rem);
     border-top: 4px solid var(--guide-amber);
-    border-radius: 0;
+    border-radius: 8px;
 }
 
 .incident-card h2 {
@@ -103,7 +108,7 @@
     height: 3rem;
     color: #0a0e14;
     background: var(--guide-amber);
-    border-radius: 0;
+    border-radius: 8px;
     place-items: center;
 }
 
@@ -113,15 +118,15 @@
     color: var(--guide-muted);
     background: rgba(20, 19, 17, 0.94);
     border: 1px solid var(--guide-line);
-    border-radius: 0;
+    border-radius: 8px;
 }
 
 .guide-toc p {
     margin-bottom: 0.7rem;
-    color: var(--accent);
+    color: var(--cyan);
     font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.24em;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
 }
 
@@ -132,7 +137,6 @@
 }
 
 .guide-toc a,
-.tech-footer a,
 .guide-section a {
     color: var(--guide-accent);
 }
@@ -142,7 +146,7 @@
     text-decoration: none;
     background: rgba(79, 209, 197, 0.07);
     border: 1px solid rgba(79, 209, 197, 0.28);
-    border-radius: 0;
+    border-radius: 8px;
 }
 
 .guide-toc a:hover {
@@ -152,17 +156,15 @@
 .guide-section {
     margin-bottom: 1.35rem;
     padding: clamp(1.4rem, 4.5vw, 3rem);
-    border-radius: 0;
+    border-radius: 8px;
     scroll-margin-top: 1rem;
 }
 
 .guide-section > h2 {
     max-width: 850px;
     margin-bottom: 0.75rem;
-    font-size: clamp(1.75rem, 4vw, 2.6rem);
-    line-height: 1.1;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
+    font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+    line-height: 1.15;
 }
 
 .section-kicker {
@@ -172,8 +174,8 @@
     margin-bottom: 0.9rem;
     color: var(--guide-green);
     font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.24em;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
 }
 
@@ -212,7 +214,7 @@
     padding: 1.1rem;
     background: var(--guide-panel-soft);
     border: 1px solid var(--guide-line);
-    border-radius: 0;
+    border-radius: 8px;
 }
 
 .request-flow li:not(:nth-child(3n))::after {
@@ -239,7 +241,7 @@
     height: 2rem;
     color: #0a0e14;
     background: var(--guide-accent);
-    border-radius: 0;
+    border-radius: 8px;
     font-weight: 900;
     place-items: center;
 }
@@ -266,7 +268,7 @@
     gap: 1rem;
     margin-top: 1.5rem;
     padding: 1.15rem 1.25rem;
-    border-radius: 0;
+    border-radius: 8px;
 }
 
 .concept-callout {
@@ -317,7 +319,7 @@
     padding: 1.25rem;
     background: var(--guide-panel-soft);
     border: 1px solid var(--guide-line);
-    border-radius: 0;
+    border-radius: 8px;
 }
 
 .step-card h3 {
@@ -366,7 +368,7 @@
     max-width: 100%;
     overflow-x: auto;
     border: 1px solid var(--guide-line);
-    border-radius: 0;
+    border-radius: 8px;
 }
 
 .status-table,
@@ -406,7 +408,7 @@
     min-width: 3.4rem;
     padding: 0.3rem 0.55rem;
     color: #0a0e14;
-    border-radius: 0;
+    border-radius: 8px;
     font-weight: 900;
     text-align: center;
 }
@@ -443,7 +445,7 @@
     padding: 1rem;
     background: rgba(0, 0, 0, 0.2);
     border: 1px solid var(--guide-line);
-    border-radius: 0;
+    border-radius: 8px;
 }
 
 .key-grid code,
@@ -491,7 +493,7 @@
     height: 1.55rem;
     color: #0a0e14;
     background: var(--guide-green);
-    border-radius: 0;
+    border-radius: 8px;
     content: counter(compact-step);
     font-size: 0.78rem;
     font-weight: 900;
@@ -509,7 +511,7 @@
     color: var(--ink);
     background: #0a0908;
     border: 1px solid var(--guide-line);
-    border-radius: 0;
+    border-radius: 8px;
     font-size: 0.88rem;
     line-height: 1.65;
 }
@@ -528,7 +530,7 @@
     padding: 1.1rem;
     background: var(--guide-panel-soft);
     border: 1px solid var(--guide-line);
-    border-radius: 0;
+    border-radius: 8px;
 }
 
 .log-grid code {
@@ -560,7 +562,7 @@
     padding: 1rem;
     background: var(--guide-panel-soft);
     border: 1px solid var(--guide-line);
-    border-radius: 0;
+    border-radius: 8px;
 }
 
 .test-sequence > div > span {
@@ -569,7 +571,7 @@
     height: 1.8rem;
     color: #0a0e14;
     background: var(--guide-accent);
-    border-radius: 0;
+    border-radius: 8px;
     font-weight: 900;
     place-items: center;
 }
@@ -583,7 +585,7 @@
     padding: 1.4rem;
     background: linear-gradient(135deg, rgba(224, 182, 77, 0.1), rgba(79, 209, 197, 0.05));
     border: 1px solid var(--guide-line);
-    border-radius: 0;
+    border-radius: 8px;
 }
 
 .final-check h3 {
@@ -602,7 +604,7 @@
     gap: 1rem;
     margin-bottom: 2rem;
     padding: clamp(1.3rem, 4vw, 2rem);
-    border-radius: 0;
+    border-radius: 8px;
 }
 
 .help-card > i {
@@ -693,7 +695,7 @@
     .site-header,
     .hero-actions,
     .guide-toc,
-    .guide-page .tech-footer {
+    .guide-page .site-footer {
         display: none !important;
     }
 
