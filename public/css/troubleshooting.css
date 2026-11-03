@@ -1,46 +1,28 @@
+/* Bulwark Black palette from style.css: gold accent, teal for "data" cues */
 .guide-page {
-    --guide-ink: #f4f8ff;
-    --guide-muted: #c6d2e3;
-    --guide-panel: rgba(8, 18, 42, 0.88);
-    --guide-panel-soft: rgba(19, 39, 73, 0.72);
-    --guide-line: rgba(112, 213, 255, 0.28);
-    --guide-accent: #64dcff;
-    --guide-green: #5bf3a7;
-    --guide-amber: #ffd166;
+    --guide-ink: var(--ink);
+    --guide-muted: #b3bcc8;
+    --guide-panel: rgba(25, 24, 22, 0.94);
+    --guide-panel-soft: var(--bg-2);
+    --guide-line: rgba(255, 255, 255, 0.1);
+    --guide-accent: var(--accent);
+    --guide-green: var(--intel);
+    --guide-amber: var(--accent-bright);
     line-height: 1.65;
 }
 
 .guide-page code,
 .guide-page pre {
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    font-family: var(--font-mono);
 }
 
 .guide-page code {
     overflow-wrap: anywhere;
 }
 
+/* The banner carries its own padding, so the shared .hero adds none */
 .guide-hero {
-    padding-bottom: 0;
-    background:
-        radial-gradient(circle at 82% 18%, rgba(0, 212, 255, 0.28), transparent 32%),
-        radial-gradient(circle at 13% 82%, rgba(91, 243, 167, 0.18), transparent 28%),
-        linear-gradient(135deg, #071128 0%, #10285b 52%, #075a75 100%);
-}
-
-.guide-header-content {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.guide-logo {
-    color: var(--text-light);
-    text-decoration: none;
-}
-
-.guide-logo .site-name {
-    color: var(--text-light);
-    font-size: 1.45rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
+    padding: 0 1rem;
 }
 
 .guide-banner {
@@ -52,21 +34,14 @@
     text-align: center;
 }
 
-.eyebrow {
-    margin-bottom: 0.65rem;
-    color: var(--guide-green);
-    font-size: 0.82rem;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-}
-
 .guide-banner h1 {
-    max-width: 850px;
-    margin: 0 auto;
-    font-size: clamp(2.35rem, 7vw, 5.4rem);
-    line-height: 0.98;
-    letter-spacing: -0.055em;
+    max-width: 900px;
+    margin: 1.25rem auto 0;
+    font-size: clamp(2.35rem, 7vw, 4.75rem);
+    font-weight: 600;
+    line-height: 1.02;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
     text-wrap: balance;
 }
 
@@ -87,22 +62,6 @@
 
 .hero-actions .btn {
     text-decoration: none;
-}
-
-.guide-page .btn-primary {
-    color: #071128;
-    background: linear-gradient(135deg, var(--guide-accent), var(--guide-green));
-}
-
-.btn-secondary {
-    color: var(--guide-ink);
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.26);
-}
-
-.btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.15);
-    transform: translateY(-2px);
 }
 
 .guide-main {
@@ -126,7 +85,7 @@
     gap: 1.25rem;
     padding: clamp(1.4rem, 4vw, 2.2rem);
     border-top: 4px solid var(--guide-amber);
-    border-radius: 18px;
+    border-radius: 0;
 }
 
 .incident-card h2 {
@@ -142,9 +101,9 @@
     display: grid;
     width: 3rem;
     height: 3rem;
-    color: #071128;
+    color: #0a0e14;
     background: var(--guide-amber);
-    border-radius: 12px;
+    border-radius: 0;
     place-items: center;
 }
 
@@ -152,15 +111,18 @@
     margin: 1.25rem 0 2rem;
     padding: 1rem 1.25rem;
     color: var(--guide-muted);
-    background: rgba(6, 14, 34, 0.78);
+    background: rgba(20, 19, 17, 0.94);
     border: 1px solid var(--guide-line);
-    border-radius: 14px;
+    border-radius: 0;
 }
 
 .guide-toc p {
-    margin-bottom: 0.55rem;
-    color: var(--guide-ink);
-    font-weight: 800;
+    margin-bottom: 0.7rem;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
 }
 
 .guide-toc div {
@@ -178,28 +140,29 @@
 .guide-toc a {
     padding: 0.35rem 0.7rem;
     text-decoration: none;
-    background: rgba(100, 220, 255, 0.08);
-    border: 1px solid rgba(100, 220, 255, 0.2);
-    border-radius: 999px;
+    background: rgba(79, 209, 197, 0.07);
+    border: 1px solid rgba(79, 209, 197, 0.28);
+    border-radius: 0;
 }
 
 .guide-toc a:hover {
-    background: rgba(100, 220, 255, 0.17);
+    background: rgba(79, 209, 197, 0.16);
 }
 
 .guide-section {
     margin-bottom: 1.35rem;
     padding: clamp(1.4rem, 4.5vw, 3rem);
-    border-radius: 20px;
+    border-radius: 0;
     scroll-margin-top: 1rem;
 }
 
 .guide-section > h2 {
     max-width: 850px;
     margin-bottom: 0.75rem;
-    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-size: clamp(1.75rem, 4vw, 2.6rem);
     line-height: 1.1;
-    letter-spacing: -0.025em;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
 }
 
 .section-kicker {
@@ -208,9 +171,9 @@
     gap: 0.6rem;
     margin-bottom: 0.9rem;
     color: var(--guide-green);
-    font-size: 0.85rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.24em;
     text-transform: uppercase;
 }
 
@@ -218,7 +181,7 @@
     display: grid;
     width: 1.75rem;
     height: 1.75rem;
-    color: #071128;
+    color: #0a0e14;
     background: var(--guide-green);
     border-radius: 50%;
     place-items: center;
@@ -249,7 +212,7 @@
     padding: 1.1rem;
     background: var(--guide-panel-soft);
     border: 1px solid var(--guide-line);
-    border-radius: 13px;
+    border-radius: 0;
 }
 
 .request-flow li:not(:nth-child(3n))::after {
@@ -260,7 +223,7 @@
     width: 1.3rem;
     height: 1.3rem;
     color: var(--guide-green);
-    background: #102549;
+    background: var(--bg-2);
     border: 1px solid var(--guide-line);
     border-radius: 50%;
     content: "→";
@@ -274,9 +237,9 @@
     display: grid;
     width: 2rem;
     height: 2rem;
-    color: #071128;
+    color: #0a0e14;
     background: var(--guide-accent);
-    border-radius: 8px;
+    border-radius: 0;
     font-weight: 900;
     place-items: center;
 }
@@ -284,6 +247,10 @@
 .request-flow strong,
 .request-flow span {
     display: block;
+}
+
+.request-flow .flow-number {
+    display: grid;
 }
 
 .request-flow div > span {
@@ -299,17 +266,17 @@
     gap: 1rem;
     margin-top: 1.5rem;
     padding: 1.15rem 1.25rem;
-    border-radius: 13px;
+    border-radius: 0;
 }
 
 .concept-callout {
-    background: rgba(0, 212, 255, 0.08);
+    background: rgba(79, 209, 197, 0.07);
     border-left: 4px solid var(--guide-accent);
 }
 
 .warning-callout {
     margin-bottom: 1.5rem;
-    background: rgba(255, 209, 102, 0.1);
+    background: rgba(224, 182, 77, 0.08);
     border-left: 4px solid var(--guide-amber);
 }
 
@@ -350,7 +317,7 @@
     padding: 1.25rem;
     background: var(--guide-panel-soft);
     border: 1px solid var(--guide-line);
-    border-radius: 14px;
+    border-radius: 0;
 }
 
 .step-card h3 {
@@ -388,7 +355,7 @@
     display: grid;
     width: 1.8rem;
     height: 1.8rem;
-    color: #071128;
+    color: #0a0e14;
     background: var(--guide-green);
     border-radius: 50%;
     font-weight: 900;
@@ -399,7 +366,7 @@
     max-width: 100%;
     overflow-x: auto;
     border: 1px solid var(--guide-line);
-    border-radius: 14px;
+    border-radius: 0;
 }
 
 .status-table,
@@ -431,15 +398,15 @@
 .status-table thead th,
 .mapping-table thead th {
     color: var(--guide-ink);
-    background: rgba(100, 220, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
 }
 
 .status-badge {
     display: inline-block;
     min-width: 3.4rem;
     padding: 0.3rem 0.55rem;
-    color: #071128;
-    border-radius: 7px;
+    color: #0a0e14;
+    border-radius: 0;
     font-weight: 900;
     text-align: center;
 }
@@ -476,7 +443,7 @@
     padding: 1rem;
     background: rgba(0, 0, 0, 0.2);
     border: 1px solid var(--guide-line);
-    border-radius: 12px;
+    border-radius: 0;
 }
 
 .key-grid code,
@@ -522,9 +489,9 @@
     display: grid;
     width: 1.55rem;
     height: 1.55rem;
-    color: #071128;
+    color: #0a0e14;
     background: var(--guide-green);
-    border-radius: 6px;
+    border-radius: 0;
     content: counter(compact-step);
     font-size: 0.78rem;
     font-weight: 900;
@@ -539,10 +506,10 @@
     max-width: 100%;
     overflow-x: auto;
     padding: 1.25rem;
-    color: #dff8ff;
-    background: #050b19;
+    color: var(--ink);
+    background: #0a0908;
     border: 1px solid var(--guide-line);
-    border-radius: 13px;
+    border-radius: 0;
     font-size: 0.88rem;
     line-height: 1.65;
 }
@@ -561,7 +528,7 @@
     padding: 1.1rem;
     background: var(--guide-panel-soft);
     border: 1px solid var(--guide-line);
-    border-radius: 12px;
+    border-radius: 0;
 }
 
 .log-grid code {
@@ -593,16 +560,16 @@
     padding: 1rem;
     background: var(--guide-panel-soft);
     border: 1px solid var(--guide-line);
-    border-radius: 12px;
+    border-radius: 0;
 }
 
 .test-sequence > div > span {
     display: grid;
     width: 1.8rem;
     height: 1.8rem;
-    color: #071128;
+    color: #0a0e14;
     background: var(--guide-accent);
-    border-radius: 7px;
+    border-radius: 0;
     font-weight: 900;
     place-items: center;
 }
@@ -614,9 +581,9 @@
     gap: 1.5rem;
     margin-top: 1.5rem;
     padding: 1.4rem;
-    background: linear-gradient(135deg, rgba(0, 212, 255, 0.13), rgba(91, 243, 167, 0.1));
+    background: linear-gradient(135deg, rgba(224, 182, 77, 0.1), rgba(79, 209, 197, 0.05));
     border: 1px solid var(--guide-line);
-    border-radius: 14px;
+    border-radius: 0;
 }
 
 .final-check h3 {
@@ -625,7 +592,7 @@
 
 .final-check .btn {
     flex: 0 0 auto;
-    color: #071128;
+    color: #0a0e14;
     text-decoration: none;
 }
 
@@ -635,7 +602,7 @@
     gap: 1rem;
     margin-bottom: 2rem;
     padding: clamp(1.3rem, 4vw, 2rem);
-    border-radius: 18px;
+    border-radius: 0;
 }
 
 .help-card > i {
@@ -723,7 +690,7 @@
         background: #fff;
     }
 
-    .guide-header-content,
+    .site-header,
     .hero-actions,
     .guide-toc,
     .guide-page .tech-footer {

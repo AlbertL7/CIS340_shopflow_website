@@ -3,62 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0d0c0b">
     <title>ShopFlow Database Analytics | CISS 340</title>
-    <link rel="stylesheet" href="css/style.css">
-    <!-- Add Font Awesome for icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;600&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <a class="skip-link" href="#main-content">Skip to main content</a>
-    <!-- Hero Header with Animation -->
-    <header class="hero-header">
-        <div class="lightning-bg"></div>
-        <div class="header-content">
-            <div class="logo">
-                <i class="fas fa-database"></i>
-                <h1>ShopFlow Analytics</h1>
-            </div>
-            <nav aria-label="Primary navigation">
-                <a href="#products"><i class="fas fa-shopping-cart"></i> Products</a>
-                <a href="#analytics"><i class="fas fa-chart-line"></i> Analytics</a>
-                <a href="#customer-lookup"><i class="fas fa-users"></i> Customers</a>
-                <a href="troubleshooting.html"><i class="fas fa-life-ring"></i> Troubleshooting</a>
+
+    <!-- Decorative circuit board with moving gold pulses (js/circuit.js) -->
+    <div id="circuit-bg" aria-hidden="true">
+        <div class="circuit-pattern"></div>
+        <div id="circuit-pulse-layer"></div>
+    </div>
+
+    <header class="site-header">
+        <div class="header-bar">
+            <a class="brand" href="#top" aria-label="ShopFlow Analytics home">
+                <span class="brand-mark" aria-hidden="true"><i class="fas fa-database"></i></span>
+                <span class="brand-name">Shop<span class="accent">Flow</span><small> Analytics</small></span>
+            </a>
+            <nav class="site-nav" aria-label="Primary navigation">
+                <a href="#products">Products</a>
+                <a href="#analytics">Analytics</a>
+                <a href="#customer-lookup">Customers</a>
+                <a class="nav-chip" href="troubleshooting.html">Troubleshooting <span aria-hidden="true">&rarr;</span></a>
             </nav>
+            <a class="btn btn-primary btn-small header-cta" href="#search-section">Search products <span aria-hidden="true">&rarr;</span></a>
         </div>
-        <div class="hero-banner">
-            <h2>A database-backed website prototype</h2>
-            <p>Realistic instructor-provided fictional data from Aiven for MySQL 8.4</p>
-            <div class="stats-row">
-                <div class="stat">
-                    <i class="fas fa-server"></i>
-                    <span>Server-side API</span>
-                </div>
-                <div class="stat">
-                    <i class="fas fa-bolt"></i>
-                    <span>Read-only data</span>
-                </div>
-                <div class="stat">
-                    <i class="fas fa-shield-alt"></i>
-                    <span>TLS verified</span>
-                </div>
+
+        <!-- Scrolling fact strip; hover to pause -->
+        <div class="ticker">
+            <span class="ticker-label"><span class="live-dot" aria-hidden="true"></span>Live</span>
+            <div class="ticker-window">
+                <ul class="ticker-track">
+                    <li><i class="fas fa-database" aria-hidden="true"></i> Aiven for MySQL 8.4 LTS</li>
+                    <li><i class="fas fa-server" aria-hidden="true"></i> Netlify Functions server-side API</li>
+                    <li><i class="fas fa-user-shield" aria-hidden="true"></i> SELECT-only reader account</li>
+                    <li><i class="fas fa-lock" aria-hidden="true"></i> TLS certificate verified</li>
+                    <li><i class="fas fa-table" aria-hidden="true"></i> 7 tables: customers · products · orders · order_items · reviews · abandoned_carts · support_tickets</li>
+                    <li><i class="fas fa-flask" aria-hidden="true"></i> Instructor-provided fictional records</li>
+                </ul>
+                <ul class="ticker-track" aria-hidden="true">
+                    <li><i class="fas fa-database"></i> Aiven for MySQL 8.4 LTS</li>
+                    <li><i class="fas fa-server"></i> Netlify Functions server-side API</li>
+                    <li><i class="fas fa-user-shield"></i> SELECT-only reader account</li>
+                    <li><i class="fas fa-lock"></i> TLS certificate verified</li>
+                    <li><i class="fas fa-table"></i> 7 tables: customers · products · orders · order_items · reviews · abandoned_carts · support_tickets</li>
+                    <li><i class="fas fa-flask"></i> Instructor-provided fictional records</li>
+                </ul>
             </div>
         </div>
     </header>
 
+    <section class="hero" id="top">
+        <div class="grid-bg" aria-hidden="true"></div>
+        <div class="hero-glow" aria-hidden="true"></div>
+        <div class="hero-inner">
+            <p class="hero-eyebrow fade-up"><span class="ping" aria-hidden="true"></span> CISS 340 &middot; Guided database project</p>
+            <h1 class="fade-up">ShopFlow <span>Analytics</span></h1>
+            <p class="hero-tagline fade-up">Browser &rarr; Netlify Function &rarr; Aiven MySQL &rarr; JSON</p>
+            <p class="hero-sub fade-up">A database-backed website prototype. Realistic instructor-provided fictional data from Aiven for MySQL 8.4.</p>
+            <div class="hero-actions fade-up">
+                <a class="btn btn-primary" href="#products">Browse products <span aria-hidden="true">&rarr;</span></a>
+                <a class="btn btn-outline" href="#analytics">Run analytics <span aria-hidden="true">&rarr;</span></a>
+            </div>
+            <ul class="hero-markers fade-up">
+                <li><i class="fas fa-server" aria-hidden="true"></i> Server-side API</li>
+                <li><i class="fas fa-bolt" aria-hidden="true"></i> Read-only data</li>
+                <li><i class="fas fa-shield-alt" aria-hidden="true"></i> TLS verified</li>
+            </ul>
+        </div>
+    </section>
+
     <main id="main-content">
-        <!-- Search Section with Icons -->
-        <section id="search-section" class="glass-effect">
-            <div class="section-header">
-                <i class="fas fa-search"></i>
-                <h2>Search &amp; Filter</h2>
+        <!-- Search -->
+        <section id="search-section" class="panel">
+            <div class="section-head">
+                <div>
+                    <p class="eyebrow">01 &middot; Query the catalog</p>
+                    <h2>Search &amp; Filter</h2>
+                    <div class="accent-line" aria-hidden="true"></div>
+                </div>
+                <code class="endpoint">GET /search?q=</code>
             </div>
             <div class="search-container">
                 <div class="search-box">
-                    <i class="fas fa-search search-icon"></i>
+                    <i class="fas fa-search search-icon" aria-hidden="true"></i>
                     <label class="visually-hidden" for="search-input">Search fictional products</label>
                     <input type="search" id="search-input" maxlength="100" placeholder="Search fictional products...">
                     <button type="button" onclick="searchProducts()" class="btn btn-primary">
-                        <i class="fas fa-bolt"></i> Search
+                        <i class="fas fa-bolt" aria-hidden="true"></i> Search
                     </button>
                 </div>
 
@@ -82,86 +120,107 @@
             </div>
         </section>
 
-        <!-- Products Grid -->
-        <section id="products" class="glass-effect">
-            <div class="section-header">
-                <i class="fas fa-box"></i>
-                <h2>Products Catalog</h2>
+        <!-- Products -->
+        <section id="products" class="panel">
+            <div class="section-head">
+                <div>
+                    <p class="eyebrow">02 &middot; products table</p>
+                    <h2>Products Catalog</h2>
+                    <div class="accent-line" aria-hidden="true"></div>
+                </div>
+                <code class="endpoint">GET /products</code>
             </div>
             <div id="product-list" class="product-grid" aria-live="polite">
                 <div class="loading">
-                    <i class="fas fa-spinner fa-spin"></i>
+                    <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
                     <p>Loading products from database...</p>
                 </div>
             </div>
         </section>
 
-        <!-- Analytics Dashboard -->
-        <section id="analytics" class="glass-effect">
-            <div class="section-header">
-                <i class="fas fa-analytics"></i>
-                <h2>Business Intelligence Dashboard</h2>
+        <!-- Analytics -->
+        <section id="analytics" class="panel">
+            <div class="section-head">
+                <div>
+                    <p class="eyebrow">03 &middot; Business intelligence</p>
+                    <h2>Business Intelligence Dashboard</h2>
+                    <div class="accent-line" aria-hidden="true"></div>
+                </div>
+                <code class="endpoint">GET /analytics?query=</code>
             </div>
             <div class="query-buttons">
-                <button type="button" onclick="getTopProducts()" class="btn btn-gradient">
-                    <i class="fas fa-trophy"></i> Top Products
+                <button type="button" onclick="getTopProducts()" class="btn btn-tile">
+                    <i class="fas fa-trophy" aria-hidden="true"></i> Top Products
                 </button>
-                <button type="button" onclick="getCustomerSegments()" class="btn btn-gradient">
-                    <i class="fas fa-users"></i> Segments
+                <button type="button" onclick="getCustomerSegments()" class="btn btn-tile">
+                    <i class="fas fa-users" aria-hidden="true"></i> Segments
                 </button>
-                <button type="button" onclick="getRevenueByCategory()" class="btn btn-gradient">
-                    <i class="fas fa-dollar-sign"></i> Revenue
+                <button type="button" onclick="getRevenueByCategory()" class="btn btn-tile">
+                    <i class="fas fa-dollar-sign" aria-hidden="true"></i> Revenue
                 </button>
-                <button type="button" onclick="getOrderStatus()" class="btn btn-gradient">
-                    <i class="fas fa-clipboard-list"></i> Orders
+                <button type="button" onclick="getOrderStatus()" class="btn btn-tile">
+                    <i class="fas fa-clipboard-list" aria-hidden="true"></i> Orders
                 </button>
-                <button type="button" onclick="getMonthlySales()" class="btn btn-gradient">
-                    <i class="fas fa-calendar"></i> Trends
+                <button type="button" onclick="getMonthlySales()" class="btn btn-tile">
+                    <i class="fas fa-calendar" aria-hidden="true"></i> Trends
                 </button>
-                <button type="button" onclick="getProductPerformance()" class="btn btn-gradient">
-                    <i class="fas fa-chart-pie"></i> Performance
+                <button type="button" onclick="getProductPerformance()" class="btn btn-tile">
+                    <i class="fas fa-chart-pie" aria-hidden="true"></i> Performance
                 </button>
             </div>
             <div id="analytics-result" class="analytics-display" aria-live="polite"></div>
         </section>
 
-        <!-- Customer Lookup -->
-        <section id="customer-lookup" class="glass-effect">
-            <div class="section-header">
-                <i class="fas fa-user-search"></i>
-                <h2>Fictional Customer Lookup</h2>
+        <!-- Customer lookup -->
+        <section id="customer-lookup" class="panel">
+            <div class="section-head">
+                <div>
+                    <p class="eyebrow">04 &middot; customers table</p>
+                    <h2>Fictional Customer Lookup</h2>
+                    <div class="accent-line" aria-hidden="true"></div>
+                </div>
+                <code class="endpoint">GET /customer?email=</code>
             </div>
             <div class="form-group">
                 <div class="input-with-icon">
-                    <i class="fas fa-envelope"></i>
+                    <i class="fas fa-envelope" aria-hidden="true"></i>
                     <label class="visually-hidden" for="customer-email">Fictional customer email</label>
                     <input type="email" id="customer-email" maxlength="254" placeholder="Enter a fictional customer email">
                     <button type="button" onclick="lookupCustomer()" class="btn btn-primary">
-                        <i class="fas fa-database"></i> Query Database
+                        <i class="fas fa-database" aria-hidden="true"></i> Query Database
                     </button>
                 </div>
             </div>
-            <p>This demonstration contains only instructor-provided fictional records.</p>
+            <p class="note">This demonstration contains only instructor-provided fictional records.</p>
             <div id="customer-result" aria-live="polite"></div>
         </section>
     </main>
 
     <footer class="tech-footer">
         <div class="footer-content">
-            <div class="tech-stack">
+            <div class="footer-card">
+                <p class="footer-brand"><i class="fas fa-database" aria-hidden="true"></i> <span>Shop<span class="accent">Flow</span></span></p>
+                <p class="eyebrow">CISS 340 &middot; Database Concepts</p>
+                <p>A guided database analytics project. Every record shown is realistic, instructor-provided fictional data.</p>
+            </div>
+            <div class="footer-card tech-stack">
                 <h3>Technology Stack</h3>
                 <div class="tech-icons">
-                    <span><i class="fas fa-database"></i> MySQL 8.4 LTS</span>
-                    <span><i class="fab fa-node-js"></i> Node.js</span>
-                    <span><i class="fas fa-cloud"></i> Aiven Cloud</span>
-                    <span><i class="fas fa-lock"></i> SSL/TLS</span>
+                    <span><i class="fas fa-database" aria-hidden="true"></i> MySQL 8.4 LTS</span>
+                    <span><i class="fab fa-node-js" aria-hidden="true"></i> Node.js</span>
+                    <span><i class="fas fa-cloud" aria-hidden="true"></i> Aiven Cloud</span>
+                    <span><i class="fas fa-lock" aria-hidden="true"></i> SSL/TLS</span>
                 </div>
             </div>
-            <p class="footer-help"><a href="troubleshooting.html">Having trouble connecting ShopFlow? Open the student troubleshooting guide.</a></p>
-            <p>&copy; 2026 ShopFlow - CISS 340 guided database analytics project</p>
+            <div class="footer-card">
+                <h3>Need help?</h3>
+                <p class="footer-help"><a href="troubleshooting.html">Having trouble connecting ShopFlow? Open the student troubleshooting guide. <span aria-hidden="true">&rarr;</span></a></p>
+            </div>
         </div>
+        <p class="footer-legal">&copy; 2026 ShopFlow - CISS 340 guided database analytics project</p>
     </footer>
 
+    <script src="js/circuit.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

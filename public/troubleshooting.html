@@ -5,35 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A beginner-friendly guide for tracing and repairing the ShopFlow connection from the browser through Netlify to Aiven MySQL.">
     <title>Troubleshoot ShopFlow | CISS 340</title>
+    <meta name="theme-color" content="#0d0c0b">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;600&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/troubleshooting.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="guide-page">
     <a class="skip-link" href="#main-content">Skip to troubleshooting steps</a>
 
-    <header class="hero-header guide-hero">
-        <div class="header-content guide-header-content">
-            <a class="logo guide-logo" href="index.html" aria-label="ShopFlow Analytics home">
-                <i class="fas fa-database" aria-hidden="true"></i>
-                <span class="site-name">ShopFlow Analytics</span>
-            </a>
-            <nav aria-label="Primary navigation">
-                <a href="index.html"><i class="fas fa-store" aria-hidden="true"></i> Live demo</a>
-                <a href="troubleshooting.html" aria-current="page"><i class="fas fa-life-ring" aria-hidden="true"></i> Troubleshooting</a>
-            </nav>
-        </div>
+    <!-- Decorative circuit board with moving gold pulses (js/circuit.js) -->
+    <div id="circuit-bg" aria-hidden="true">
+        <div class="circuit-pattern"></div>
+        <div id="circuit-pulse-layer"></div>
+    </div>
 
+    <header class="site-header">
+        <div class="header-bar">
+            <a class="brand" href="index.html" aria-label="ShopFlow Analytics home">
+                <span class="brand-mark" aria-hidden="true"><i class="fas fa-database"></i></span>
+                <span class="brand-name">Shop<span class="accent">Flow</span><small> Analytics</small></span>
+            </a>
+            <nav class="site-nav" aria-label="Primary navigation">
+                <a href="index.html">Live demo</a>
+                <a href="index.html#analytics">Analytics</a>
+                <a class="nav-chip" href="troubleshooting.html" aria-current="page">Troubleshooting</a>
+            </nav>
+            <a class="btn btn-primary btn-small header-cta" href="index.html">Back to ShopFlow <span aria-hidden="true">&rarr;</span></a>
+        </div>
+    </header>
+
+    <section class="hero guide-hero">
+        <div class="grid-bg" aria-hidden="true"></div>
+        <div class="hero-glow" aria-hidden="true"></div>
         <div class="guide-banner">
             <p class="eyebrow">CISS 340 connection field guide</p>
             <h1>Trace the request. Fix the first broken handoff.</h1>
             <p class="guide-lead">ShopFlow works like a relay race. Follow the request one runner at a time—from the page, to the function, to the database, and back as JSON.</p>
             <div class="hero-actions">
                 <a class="btn btn-primary" href="#start"><i class="fas fa-stethoscope" aria-hidden="true"></i> Start diagnosing</a>
-                <a class="btn btn-secondary" href="/.netlify/functions/products"><i class="fas fa-code" aria-hidden="true"></i> Safely test the products API</a>
+                <a class="btn btn-outline" href="/.netlify/functions/products"><i class="fas fa-code" aria-hidden="true"></i> Safely test the products API</a>
             </div>
         </div>
-    </header>
+    </section>
 
     <main id="main-content" class="guide-main">
         <aside class="incident-card" aria-labelledby="incident-title">
@@ -315,9 +331,18 @@ UNION ALL SELECT 'support_tickets', COUNT(*) FROM support_tickets;</code></pre>
 
     <footer class="tech-footer">
         <div class="footer-content">
-            <p><a href="index.html">ShopFlow live demo</a> · CISS 340 guided database analytics project</p>
-            <p>All displayed records are realistic, instructor-provided fictional data.</p>
+            <div class="footer-card">
+                <p class="footer-brand"><i class="fas fa-database" aria-hidden="true"></i> <span>Shop<span class="accent">Flow</span></span></p>
+                <p class="eyebrow">CISS 340 &middot; Database Concepts</p>
+                <p><a href="index.html">ShopFlow live demo</a> · CISS 340 guided database analytics project</p>
+            </div>
+            <div class="footer-card">
+                <h3>About the data</h3>
+                <p>All displayed records are realistic, instructor-provided fictional data.</p>
+            </div>
         </div>
     </footer>
+
+    <script src="js/circuit.js"></script>
 </body>
 </html>
