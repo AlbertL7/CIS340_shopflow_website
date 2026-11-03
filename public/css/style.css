@@ -835,6 +835,29 @@ button {
     background-color: var(--surface-3);
 }
 
+/* Product picture (img/products/<product_id>.svg) replaces the placeholder */
+.product-card.has-image::before {
+    display: none;
+}
+
+.product-image {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5rem;
+    aspect-ratio: 4 / 3;
+    padding: 6%;
+    object-fit: contain;
+    background:
+        radial-gradient(circle at 50% 45%, rgba(45, 213, 183, 0.12), transparent 60%),
+        var(--surface-2);
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.product-card:hover .product-image {
+    background-color: var(--surface-3);
+}
+
 .product-card h3 {
     color: var(--ink-soft);
     font-size: 1.05rem;

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" role="img" aria-label="Cooking Pan Set">
+  <title>Cooking Pan Set</title>
+  <ellipse cx="112" cy="160" rx="86" ry="7" fill="#050908" opacity=".45"/>
+  <g transform="rotate(-18 176 64)"><rect x="168" y="58" width="52" height="11" rx="5.5" fill="#a2734b"/></g>
+  <circle cx="156" cy="70" r="32" fill="#3b6f57"/>
+  <circle cx="156" cy="70" r="25" fill="#a9ab83"/>
+  <g transform="rotate(12 150 112)"><rect x="140" y="104" width="76" height="14" rx="7" fill="#a2734b"/><circle cx="208" cy="111" r="3" fill="#7a5235"/></g>
+  <circle cx="100" cy="102" r="50" fill="#509475"/>
+  <circle cx="100" cy="102" r="41" fill="#D6D5BC"/>
+  <path d="M72 82 A34 34 0 0 1 104 68" fill="none" stroke="#fff" stroke-width="5" opacity=".45" stroke-linecap="round"/>
+  <circle cx="100" cy="102" r="41" fill="none" stroke="#a9ab83" stroke-width="3"/>
+</svg>

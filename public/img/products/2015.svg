@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" role="img" aria-label="Face Cream Anti-Aging">
+  <title>Face Cream Anti-Aging</title>
+  <ellipse cx="120" cy="156" rx="56" ry="7" fill="#050908" opacity=".45"/>
+  <rect x="78" y="88" width="84" height="62" rx="16" fill="#F7E8B2"/>
+  <rect x="78" y="108" width="84" height="20" fill="#D2689C" opacity=".55"/>
+  <rect x="74" y="62" width="92" height="30" rx="9" fill="#D2689C"/>
+  <rect x="74" y="84" width="92" height="8" fill="#a8507c"/>
+  <rect x="84" y="68" width="40" height="5" rx="2.5" fill="#fff" opacity=".3"/>
+  <rect x="86" y="94" width="7" height="48" rx="3.5" fill="#fff" opacity=".45"/>
+  <path d="M182 42 L185 52 L195 55 L185 58 L182 68 L179 58 L169 55 L179 52 Z" fill="#2DD5B7"/>
+  <path d="M196 76 L198 82 L204 84 L198 86 L196 92 L194 86 L188 84 L194 82 Z" fill="#E5C736"/>
+  <path d="M60 50 L62 56 L68 58 L62 60 L60 66 L58 60 L52 58 L58 56 Z" fill="#F7E8B2"/>
+</svg>

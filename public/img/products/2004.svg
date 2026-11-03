@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" role="img" aria-label="Yoga Mat Premium">
+  <title>Yoga Mat Premium</title>
+  <ellipse cx="122" cy="140" rx="78" ry="7" fill="#050908" opacity=".45"/>
+  <rect x="58" y="70" width="128" height="58" fill="#D2689C"/>
+  <rect x="58" y="74" width="128" height="8" fill="#fff" opacity=".18"/>
+  <ellipse cx="186" cy="99" rx="12" ry="29" fill="#a8507c"/>
+  <ellipse cx="58" cy="99" rx="13" ry="29" fill="#e48ab4"/>
+  <ellipse cx="58" cy="99" rx="9" ry="20" fill="none" stroke="#a8507c" stroke-width="2.5"/>
+  <ellipse cx="58" cy="99" rx="5" ry="11" fill="none" stroke="#a8507c" stroke-width="2.5"/>
+  <rect x="90" y="68" width="11" height="62" rx="2" fill="#23372B"/>
+  <rect x="146" y="68" width="11" height="62" rx="2" fill="#23372B"/>
+</svg>

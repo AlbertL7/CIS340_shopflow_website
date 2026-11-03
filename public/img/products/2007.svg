@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" role="img" aria-label="Coffee Maker Deluxe">
+  <title>Coffee Maker Deluxe</title>
+  <ellipse cx="120" cy="160" rx="74" ry="7" fill="#050908" opacity=".45"/>
+  <rect x="136" y="40" width="50" height="112" rx="8" fill="#32473B"/>
+  <rect x="54" y="138" width="132" height="16" rx="5" fill="#23372B"/>
+  <rect x="54" y="32" width="132" height="32" rx="9" fill="#509475"/>
+  <rect x="54" y="56" width="132" height="8" fill="#3b6f57"/>
+  <rect x="148" y="42" width="28" height="11" rx="2" fill="#0c1512"/>
+  <rect x="152" y="46" width="14" height="3" rx="1.5" fill="#2DD5B7"/>
+  <path d="M74 90 L126 90 L132 130 C132 136 128 140 122 140 L78 140 C72 140 68 136 68 130 Z" fill="#2DD5B7" opacity=".28"/>
+  <path d="M71 110 L129 110 L132 130 C132 136 128 140 122 140 L78 140 C72 140 68 136 68 130 Z" fill="#7a5235"/>
+  <path d="M74 90 L126 90 L132 130 C132 136 128 140 122 140 L78 140 C72 140 68 136 68 130 Z" fill="none" stroke="#b9c6bf" stroke-width="2.5" opacity=".7"/>
+  <rect x="70" y="84" width="60" height="9" rx="3" fill="#172620"/>
+  <path d="M130 98 C148 98 148 128 130 128" fill="none" stroke="#172620" stroke-width="7" stroke-linecap="round"/>
+  <rect x="80" y="96" width="6" height="34" rx="3" fill="#fff" opacity=".25"/>
+  <circle cx="161" cy="122" r="6" fill="#E5C736"/>
+</svg>

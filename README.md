@@ -49,6 +49,7 @@ The public [student troubleshooting guide](public/troubleshooting.html) explains
 
 ## Features
 - Product catalog with search and filters
+- Product pictures: drawn illustrations in `public/img/products/<product_id>.svg`; a product without one shows a placeholder
 - Fictional customer lookup with selected fields only
 - Business analytics dashboard
 - Delivered-revenue metrics that sum `order_items.quantity * order_items.unit_price` at the order-item grain

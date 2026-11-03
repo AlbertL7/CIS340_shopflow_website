@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" role="img" aria-label="Bed Sheets Queen Set">
+  <title>Bed Sheets Queen Set</title>
+  <ellipse cx="120" cy="156" rx="82" ry="7" fill="#050908" opacity=".45"/>
+  <rect x="50" y="116" width="140" height="32" rx="9" fill="#509475"/>
+  <path d="M50 132 C50 122 54 116 62 116 L62 148 C54 148 50 142 50 132 Z" fill="#3b6f57"/>
+  <rect x="56" y="88" width="128" height="30" rx="9" fill="#D6D5BC"/>
+  <path d="M56 103 C56 94 60 88 68 88 L68 118 C60 118 56 112 56 103 Z" fill="#a9ab83"/>
+  <rect x="62" y="60" width="116" height="30" rx="9" fill="#2DD5B7"/>
+  <path d="M62 75 C62 66 66 60 74 60 L74 90 C66 90 62 84 62 75 Z" fill="#1fa28b"/>
+  <path d="M84 70 L170 70" stroke="#fff" stroke-width="3" opacity=".3" stroke-linecap="round"/>
+  <rect x="140" y="58" width="13" height="92" fill="#E5C736"/>
+  <rect x="140" y="58" width="4" height="92" fill="#b89d22"/>
+</svg>

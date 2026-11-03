@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" role="img" aria-label="Plant-Based Protein Powder">
+  <title>Plant-Based Protein Powder</title>
+  <ellipse cx="128" cy="160" rx="80" ry="7" fill="#050908" opacity=".45"/>
+  <rect x="80" y="58" width="80" height="96" rx="10" fill="#63b07a"/>
+  <rect x="76" y="44" width="88" height="20" rx="6" fill="#3b6f57"/>
+  <path d="M84 50 L84 60 M94 50 L94 60 M104 50 L104 60 M114 50 L114 60 M124 50 L124 60 M134 50 L134 60 M144 50 L144 60 M154 50 L154 60" stroke="#2a4f3e" stroke-width="2"/>
+  <rect x="80" y="82" width="80" height="48" fill="#F7E8B2"/>
+  <path d="M106 120 C102 98 120 88 136 92 C140 110 126 124 106 120 Z" fill="#509475"/>
+  <path d="M108 118 C114 108 122 100 132 95" stroke="#F7E8B2" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <rect x="88" y="62" width="7" height="86" rx="3.5" fill="#fff" opacity=".2"/>
+  <path d="M168 140 C168 152 200 152 200 140 Z" fill="#b9c6bf"/>
+  <path d="M170 140 C172 130 196 130 198 140 Z" fill="#D6D5BC"/>
+  <rect x="198" y="138" width="22" height="6" rx="3" fill="#b9c6bf"/>
+</svg>

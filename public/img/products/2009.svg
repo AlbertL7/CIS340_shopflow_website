@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" role="img" aria-label="Wireless Mouse">
+  <title>Wireless Mouse</title>
+  <ellipse cx="120" cy="164" rx="48" ry="7" fill="#050908" opacity=".45"/>
+  <path d="M120 30 C152 30 166 58 166 96 C166 138 148 158 120 158 C92 158 74 138 74 96 C74 58 88 30 120 30 Z" fill="#D6D5BC"/>
+  <path d="M120 30 C152 30 166 58 166 96 C166 138 148 158 120 158 C140 150 152 132 152 96 C152 62 142 38 120 30 Z" fill="#a9ab83" opacity=".55"/>
+  <path d="M120 30 L120 86" stroke="#a9ab83" stroke-width="2.5"/>
+  <path d="M76 86 C100 93 140 93 164 86" fill="none" stroke="#a9ab83" stroke-width="2.5"/>
+  <rect x="114" y="48" width="12" height="26" rx="6" fill="#23372B"/>
+  <rect x="117" y="52" width="6" height="8" rx="3" fill="#2DD5B7"/>
+  <path d="M176 44 A10 10 0 0 1 176 60 M184 38 A18 18 0 0 1 184 66 M192 32 A26 26 0 0 1 192 72" fill="none" stroke="#2DD5B7" stroke-width="3" stroke-linecap="round"/>
+  <rect x="88" y="54" width="7" height="34" rx="3.5" fill="#fff" opacity=".35"/>
+</svg>
