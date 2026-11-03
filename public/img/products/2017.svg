@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" role="img" aria-label="Office Chair Ergonomic">
+  <title>Office Chair Ergonomic</title>
+  <ellipse cx="120" cy="162" rx="70" ry="7" fill="#050908" opacity=".45"/>
+  <path d="M120 138 L70 150 M120 138 L94 156 M120 138 L146 156 M120 138 L170 150" stroke="#32473B" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="68" cy="152" r="6" fill="#0c1512"/>
+  <circle cx="92" cy="159" r="6" fill="#0c1512"/>
+  <circle cx="148" cy="159" r="6" fill="#0c1512"/>
+  <circle cx="172" cy="152" r="6" fill="#0c1512"/>
+  <rect x="114" y="110" width="12" height="30" rx="3" fill="#8a9a92"/>
+  <rect x="88" y="16" width="64" height="80" rx="22" fill="#32473B"/>
+  <path d="M98 30 L142 30 M96 44 L144 44 M96 58 L144 58 M96 72 L144 72 M100 86 L140 86" stroke="#23372B" stroke-width="3"/>
+  <path d="M96 64 C108 72 132 72 144 64" fill="none" stroke="#2DD5B7" stroke-width="5" stroke-linecap="round"/>
+  <rect x="64" y="76" width="9" height="34" rx="3" fill="#172620"/>
+  <rect x="167" y="76" width="9" height="34" rx="3" fill="#172620"/>
+  <rect x="56" y="72" width="26" height="9" rx="4.5" fill="#172620"/>
+  <rect x="158" y="72" width="26" height="9" rx="4.5" fill="#172620"/>
+  <rect x="70" y="96" width="100" height="22" rx="11" fill="#509475"/>
+  <rect x="80" y="99" width="60" height="5" rx="2.5" fill="#fff" opacity=".25"/>
+</svg>

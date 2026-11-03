@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" role="img" aria-label="Organic Cotton T-Shirt">
+  <title>Organic Cotton T-Shirt</title>
+  <ellipse cx="120" cy="160" rx="62" ry="7" fill="#050908" opacity=".45"/>
+  <path d="M90 38 L62 50 L34 80 L56 100 L72 86 L72 152 L168 152 L168 86 L184 100 L206 80 L178 50 L150 38 C144 52 132 58 120 58 C108 58 96 52 90 38 Z" fill="#D6D5BC"/>
+  <path d="M168 86 L168 152 L150 152 L150 70 Z" fill="#a9ab83" opacity=".35"/>
+  <path d="M34 80 L56 100 L60 96 L40 76 Z" fill="#a9ab83" opacity=".6"/>
+  <path d="M206 80 L184 100 L180 96 L200 76 Z" fill="#a9ab83" opacity=".6"/>
+  <path d="M90 38 C96 52 108 58 120 58 C132 58 144 52 150 38" fill="none" stroke="#a9ab83" stroke-width="5" stroke-linecap="round"/>
+  <path d="M134 82 C150 76 158 88 154 100 C142 104 130 96 134 82 Z" fill="#509475"/>
+  <path d="M136 98 C142 92 148 88 154 84" stroke="#2a4f3e" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+</svg>

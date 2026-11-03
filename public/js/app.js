@@ -95,8 +95,22 @@ function displayProducts(products) {
     }
 
     const cards = products.map((product) => {
-        const card = makeElement('article', undefined, 'product-card');
+        const card = makeElement('article', undefined, 'product-card has-image');
+
+        // Pictures live in img/products/<product_id>.svg. A product without
+        // one keeps the shopping-bag placeholder drawn by the stylesheet.
+        const image = document.createElement('img');
+        image.className = 'product-image';
+        image.src = `img/products/${encodeURIComponent(displayValue(product.product_id, ''))}.svg`;
+        image.alt = '';
+        image.loading = 'lazy';
+        image.addEventListener('error', () => {
+            image.remove();
+            card.classList.remove('has-image');
+        }, { once: true });
+
         card.append(
+            image,
             makeElement('h3', product.product_name),
             makeElement('p', product.category, 'product-category'),
             makeElement('p', money(product.price), 'product-price'),

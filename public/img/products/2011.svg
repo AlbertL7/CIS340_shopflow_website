@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" role="img" aria-label="Book: AI for Everyone">
+  <title>Book: AI for Everyone</title>
+  <ellipse cx="120" cy="162" rx="62" ry="7" fill="#050908" opacity=".45"/>
+  <rect x="162" y="32" width="12" height="122" rx="2" fill="#F7E8B2"/>
+  <path d="M164 40 L172 40 M164 56 L172 56 M164 72 L172 72 M164 88 L172 88 M164 104 L172 104 M164 120 L172 120 M164 136 L172 136" stroke="#a9ab83" stroke-width="1.5"/>
+  <rect x="74" y="26" width="92" height="132" rx="4" fill="#509475"/>
+  <rect x="66" y="26" width="16" height="132" rx="3" fill="#3b6f57"/>
+  <path d="M100 56 L124 44 L148 56 L124 70 Z M100 56 L124 70 M124 44 L124 70" fill="none" stroke="#2DD5B7" stroke-width="2"/>
+  <circle cx="100" cy="56" r="5" fill="#2DD5B7"/>
+  <circle cx="124" cy="44" r="5" fill="#2DD5B7"/>
+  <circle cx="148" cy="56" r="5" fill="#2DD5B7"/>
+  <circle cx="124" cy="70" r="5" fill="#E5C736"/>
+  <text x="124" y="116" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="36" fill="#F7E8B2">AI</text>
+  <rect x="94" y="126" width="60" height="5" rx="2.5" fill="#D6D5BC" opacity=".8"/>
+  <rect x="104" y="136" width="40" height="4" rx="2" fill="#D6D5BC" opacity=".5"/>
+</svg>

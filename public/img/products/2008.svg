@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" role="img" aria-label="Laptop Backpack">
+  <title>Laptop Backpack</title>
+  <ellipse cx="120" cy="162" rx="62" ry="7" fill="#050908" opacity=".45"/>
+  <path d="M106 32 C106 18 134 18 134 32" fill="none" stroke="#2a4f3e" stroke-width="7" stroke-linecap="round"/>
+  <rect x="60" y="70" width="14" height="66" rx="6" fill="#2a4f3e"/>
+  <rect x="166" y="70" width="14" height="66" rx="6" fill="#2a4f3e"/>
+  <path d="M68 62 C68 40 90 30 120 30 C150 30 172 40 172 62 L172 148 C172 154 168 158 162 158 L78 158 C72 158 68 154 68 148 Z" fill="#509475"/>
+  <path d="M78 66 C78 48 96 40 120 40 C144 40 162 48 162 66" fill="none" stroke="#2a4f3e" stroke-width="2.5" stroke-dasharray="4 3"/>
+  <rect x="84" y="98" width="72" height="50" rx="11" fill="#3b6f57"/>
+  <path d="M90 110 L150 110" stroke="#F7E8B2" stroke-width="2.5" stroke-linecap="round"/>
+  <rect x="140" y="108" width="6" height="12" rx="2" fill="#F7E8B2"/>
+  <rect x="110" y="126" width="20" height="9" rx="2" fill="#2DD5B7"/>
+  <rect x="78" y="44" width="7" height="44" rx="3.5" fill="#fff" opacity=".16"/>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" role="img" aria-label="Vitamin C Supplements">
+  <title>Vitamin C Supplements</title>
+  <ellipse cx="120" cy="160" rx="78" ry="7" fill="#050908" opacity=".45"/>
+  <rect x="94" y="26" width="52" height="24" rx="6" fill="#D6D5BC"/>
+  <path d="M100 30 L100 46 M108 30 L108 46 M116 30 L116 46 M124 30 L124 46 M132 30 L132 46 M140 30 L140 46" stroke="#a9ab83" stroke-width="2"/>
+  <rect x="98" y="48" width="44" height="12" fill="#7a5235"/>
+  <rect x="84" y="58" width="72" height="98" rx="14" fill="#a2734b"/>
+  <rect x="84" y="84" width="72" height="48" fill="#F7E8B2"/>
+  <circle cx="120" cy="108" r="15" fill="#E5C736"/>
+  <circle cx="120" cy="108" r="11" fill="none" stroke="#F7E8B2" stroke-width="1.5"/>
+  <path d="M120 97 L120 119 M109 108 L131 108 M112 100 L128 116 M128 100 L112 116" stroke="#F7E8B2" stroke-width="1.5"/>
+  <rect x="92" y="64" width="7" height="86" rx="3.5" fill="#fff" opacity=".18"/>
+  <g transform="rotate(-25 182 146)"><rect x="168" y="140" width="28" height="12" rx="6" fill="#E5C736"/><rect x="182" y="140" width="14" height="12" rx="0" fill="#F7E8B2"/><rect x="190" y="140" width="6" height="12" rx="3" fill="#F7E8B2"/></g>
+  <g transform="rotate(15 58 150)"><rect x="44" y="144" width="28" height="12" rx="6" fill="#E5C736"/><rect x="58" y="144" width="14" height="12" fill="#F7E8B2"/><rect x="66" y="144" width="6" height="12" rx="3" fill="#F7E8B2"/></g>
+</svg>
